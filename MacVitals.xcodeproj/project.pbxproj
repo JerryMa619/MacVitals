@@ -25,6 +25,8 @@
 		200000000000000000000016 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 900000000000000000000001 /* Localizable.strings */; };
 		200000000000000000000017 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000021 /* SettingsView.swift */; };
 		200000000000000000000018 /* DiagnosticSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000022 /* DiagnosticSnapshot.swift */; };
+		200000000000000000000019 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000023 /* OnboardingView.swift */; };
+		200000000000000000000020 /* OnboardingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000024 /* OnboardingStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +52,8 @@
 		300000000000000000000020 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "Sources/MacVitals/Resources/zh-Hans.lproj/Localizable.strings"; sourceTree = SOURCE_ROOT; };
 		300000000000000000000021 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		300000000000000000000022 /* DiagnosticSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticSnapshot.swift; sourceTree = "<group>"; };
+		300000000000000000000023 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		300000000000000000000024 /* OnboardingStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,10 +106,12 @@
 				300000000000000000000001 /* MacVitalsApp.swift */,
 				300000000000000000000002 /* DashboardView.swift */,
 				300000000000000000000021 /* SettingsView.swift */,
+				300000000000000000000023 /* OnboardingView.swift */,
 				300000000000000000000003 /* SystemMonitor.swift */,
 				300000000000000000000013 /* LaunchAtLoginController.swift */,
 				300000000000000000000017 /* NotificationController.swift */,
 				300000000000000000000022 /* DiagnosticSnapshot.swift */,
+				300000000000000000000024 /* OnboardingStore.swift */,
 				300000000000000000000016 /* SettingsStore.swift */,
 				300000000000000000000015 /* Localization.swift */,
 				900000000000000000000001 /* Localizable.strings */,
@@ -211,10 +217,12 @@
 				200000000000000000000001 /* MacVitalsApp.swift in Sources */,
 				200000000000000000000002 /* DashboardView.swift in Sources */,
 				200000000000000000000017 /* SettingsView.swift in Sources */,
+				200000000000000000000019 /* OnboardingView.swift in Sources */,
 				200000000000000000000003 /* SystemMonitor.swift in Sources */,
 				200000000000000000000010 /* LaunchAtLoginController.swift in Sources */,
 				200000000000000000000014 /* NotificationController.swift in Sources */,
 				200000000000000000000018 /* DiagnosticSnapshot.swift in Sources */,
+				200000000000000000000020 /* OnboardingStore.swift in Sources */,
 				200000000000000000000013 /* SettingsStore.swift in Sources */,
 				200000000000000000000012 /* Localization.swift in Sources */,
 				200000000000000000000004 /* Models.swift in Sources */,

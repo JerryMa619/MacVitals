@@ -25,6 +25,16 @@
 "notification.memory.title" = "内存压力偏高";
 "notification.swap.body" = "Swap 使用量已达到 %@。建议查看高占用应用。";
 "notification.swap.title" = "Swap 使用量偏高";
+"onboarding.control.detail" = "MacVitals 只显示建议并可打开活动监视器，不会强制结束应用，也不会删除文件。";
+"onboarding.control.title" = "由你决定如何处理";
+"onboarding.done" = "开始监控";
+"onboarding.footer" = "之后可在设置中重新打开此说明。";
+"onboarding.monitoring.detail" = "MacVitals 使用 macOS 公共 API 读取内存、CPU、磁盘、电池、网络和可见应用内存压力。";
+"onboarding.monitoring.title" = "轻量本机监控";
+"onboarding.privacy.detail" = "MVP 不包含账号、分析、追踪或上传。诊断快照只会在你主动点击时复制。";
+"onboarding.privacy.title" = "默认保护隐私";
+"onboarding.subtitle" = "一个安静的菜单栏监控工具，帮助你在 Mac 变卡前理解系统压力。";
+"onboarding.windowTitle" = "欢迎使用 MacVitals";
 "process.empty" = "暂无可用的运行应用数据。";
 "recommendation.cpuBusy.detail" = "如果电脑明显卡顿，可以打开活动监视器查看正在占用 CPU 的应用。";
 "recommendation.cpuBusy.title" = "CPU 较忙";
@@ -59,6 +69,9 @@
 "settings.menuBar" = "菜单栏";
 "settings.notifications" = "通知提醒";
 "settings.performance" = "性能";
+"settings.privacy" = "隐私";
+"settings.privacyFooter" = "MacVitals 仅在本机监控，并避免使用不利于 App Store 审核的私有传感器 API。";
+"settings.privacyGuide" = "隐私与首次启动说明";
 "settings.samplingMode" = "采样";
 "settings.startup" = "启动";
 "settings.swapThreshold" = "Swap 提醒";

@@ -25,6 +25,16 @@
 "notification.memory.title" = "Memory pressure is high";
 "notification.swap.body" = "Swap usage reached %@. Check heavy apps when convenient.";
 "notification.swap.title" = "Swap usage is high";
+"onboarding.control.detail" = "MacVitals shows recommendations and can open Activity Monitor, but it does not force-quit apps or delete files.";
+"onboarding.control.title" = "You stay in control";
+"onboarding.done" = "Start Monitoring";
+"onboarding.footer" = "You can reopen this guide from Settings.";
+"onboarding.monitoring.detail" = "MacVitals uses public macOS APIs to read memory, CPU, disk, battery, network, and visible app memory pressure.";
+"onboarding.monitoring.title" = "Lightweight local monitoring";
+"onboarding.privacy.detail" = "No account, analytics, tracking, or upload is included in the MVP. Diagnostic snapshots are copied only when you ask.";
+"onboarding.privacy.title" = "Private by default";
+"onboarding.subtitle" = "A quiet menu bar monitor for understanding pressure before your Mac slows down.";
+"onboarding.windowTitle" = "Welcome to MacVitals";
 "process.empty" = "No running app data available.";
 "recommendation.cpuBusy.detail" = "Check Activity Monitor for active apps if the Mac feels sluggish.";
 "recommendation.cpuBusy.title" = "CPU is busy";
@@ -59,6 +69,9 @@
 "settings.menuBar" = "Menu bar";
 "settings.notifications" = "Notifications";
 "settings.performance" = "Performance";
+"settings.privacy" = "Privacy";
+"settings.privacyFooter" = "MacVitals monitors locally and avoids private sensor APIs for App Store safety.";
+"settings.privacyGuide" = "Privacy and First Launch Guide";
 "settings.samplingMode" = "Sampling";
 "settings.startup" = "Startup";
 "settings.swapThreshold" = "Swap alert";

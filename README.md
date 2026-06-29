@@ -7,6 +7,7 @@ MacVitals is a lightweight native macOS menu bar monitor for memory, CPU, disk, 
 - Native Swift + SwiftUI + AppKit menu bar app.
 - Low-overhead periodic sampling.
 - Memory pressure, swap, CPU, disk, battery, network throughput, and running app memory ranking.
+- First-launch privacy guide explaining local monitoring and user-controlled actions.
 - Dedicated Settings window for preferences and alert thresholds.
 - Sampling modes for balanced, low-power, or more responsive updates.
 - App Sandbox entitlement and menu bar agent bundle configuration.

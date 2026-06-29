@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject private var monitor: SystemMonitor
+    let showPrivacyGuide: () -> Void
 
     var body: some View {
         VStack(spacing: 0) {
@@ -89,6 +90,18 @@ struct SettingsView: View {
                     Text(L.t("settings.startup"))
                 }
 
+                Section {
+                    Button {
+                        showPrivacyGuide()
+                    } label: {
+                        Label(L.t("settings.privacyGuide"), systemImage: "lock.shield")
+                    }
+                } header: {
+                    Text(L.t("settings.privacy"))
+                } footer: {
+                    Text(L.t("settings.privacyFooter"))
+                }
+
                 if let settingsError = monitor.settingsError {
                     Section {
                         Text(settingsError)
@@ -102,7 +115,7 @@ struct SettingsView: View {
             .padding(.horizontal, 12)
             .padding(.vertical, 10)
         }
-        .frame(width: 420, height: 500)
+        .frame(width: 420, height: 560)
         .background(Color(nsColor: .windowBackgroundColor))
     }
 

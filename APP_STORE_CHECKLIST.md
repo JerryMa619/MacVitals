@@ -23,6 +23,7 @@
 - No account system.
 - No data upload.
 - Keep diagnostics local; snapshot export is user-triggered and copies plain text to the clipboard.
+- Keep first-launch privacy language aligned with actual data handling.
 
 ## Review Notes
 
