@@ -2,6 +2,7 @@ import SwiftUI
 
 struct DashboardView: View {
     @EnvironmentObject private var monitor: SystemMonitor
+    let openSettings: () -> Void
 
     var body: some View {
         VStack(spacing: 0) {
@@ -13,21 +14,6 @@ struct DashboardView: View {
                     TrendSection(history: monitor.history)
                     MemorySection(memory: monitor.stats.memory)
                     HardwareSection(stats: monitor.stats)
-                    PreferencesSection(
-                        settings: monitor.settings,
-                        launchAtLoginEnabled: monitor.launchAtLoginEnabled,
-                        settingsError: monitor.settingsError
-                    ) { mode in
-                        monitor.setMenuBarDisplayMode(mode)
-                    } setNotificationsEnabled: { enabled in
-                        monitor.setNotificationsEnabled(enabled)
-                    } setMemoryPressureThreshold: { threshold in
-                        monitor.setMemoryPressureThreshold(threshold)
-                    } setSwapThresholdBytes: { bytes in
-                        monitor.setSwapThresholdBytes(bytes)
-                    } setLaunchAtLoginEnabled: { enabled in
-                        monitor.setLaunchAtLoginEnabled(enabled)
-                    }
                     ProcessSection(processes: monitor.stats.processes) {
                         monitor.openActivityMonitor()
                     }
@@ -64,6 +50,12 @@ struct DashboardView: View {
             }
 
             Spacer()
+
+            Button {
+                openSettings()
+            } label: {
+                Label(L.t("action.settings"), systemImage: "gearshape")
+            }
 
             Button {
                 monitor.openActivityMonitor()
@@ -296,127 +288,6 @@ private struct ProcessSection: View {
             }
         }
         .panelStyle()
-    }
-}
-
-private struct PreferencesSection: View {
-    let settings: MonitorSettings
-    let launchAtLoginEnabled: Bool
-    let settingsError: String?
-    let setMenuBarDisplayMode: (MenuBarDisplayMode) -> Void
-    let setNotificationsEnabled: (Bool) -> Void
-    let setMemoryPressureThreshold: (Double) -> Void
-    let setSwapThresholdBytes: (UInt64) -> Void
-    let setLaunchAtLoginEnabled: (Bool) -> Void
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            SectionTitle(L.t("section.preferences"))
-
-            Picker(L.t("settings.menuBar"), selection: Binding(
-                get: { settings.menuBarDisplayMode },
-                set: { newValue in
-                    setMenuBarDisplayMode(newValue)
-                }
-            )) {
-                ForEach(MenuBarDisplayMode.allCases) { mode in
-                    Text(mode.title).tag(mode)
-                }
-            }
-            .pickerStyle(.menu)
-
-            Toggle(isOn: Binding(
-                get: { settings.notificationsEnabled },
-                set: { newValue in
-                    setNotificationsEnabled(newValue)
-                }
-            )) {
-                Label(L.t("settings.notifications"), systemImage: "bell")
-            }
-            .toggleStyle(.switch)
-
-            if settings.notificationsEnabled {
-                VStack(spacing: 8) {
-                    ThresholdRow(
-                        title: L.t("settings.memoryThreshold"),
-                        value: settings.memoryPressureThreshold,
-                        range: 0.65...0.95,
-                        display: settings.memoryPressureThreshold.percentText,
-                        setValue: setMemoryPressureThreshold
-                    )
-                    SwapThresholdRow(
-                        value: settings.swapThresholdBytes,
-                        setValue: setSwapThresholdBytes
-                    )
-                }
-            }
-
-            Toggle(isOn: Binding(
-                get: { launchAtLoginEnabled },
-                set: { newValue in
-                    setLaunchAtLoginEnabled(newValue)
-                }
-            )) {
-                Label(L.t("settings.launchAtLogin"), systemImage: "power")
-            }
-            .toggleStyle(.switch)
-
-            if let settingsError {
-                Text(settingsError)
-                    .font(.caption)
-                    .foregroundStyle(.red)
-                    .lineLimit(2)
-            }
-        }
-        .panelStyle()
-    }
-}
-
-private struct ThresholdRow: View {
-    let title: String
-    let value: Double
-    let range: ClosedRange<Double>
-    let display: String
-    let setValue: (Double) -> Void
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack {
-                Text(title)
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Text(display)
-                    .monospacedDigit()
-            }
-            .font(.system(size: 12))
-
-            Slider(value: Binding(
-                get: { value },
-                set: { newValue in
-                    setValue(newValue)
-                }
-            ), in: range, step: 0.01)
-        }
-    }
-}
-
-private struct SwapThresholdRow: View {
-    let value: UInt64
-    let setValue: (UInt64) -> Void
-
-    private var gbValue: Double {
-        Double(value) / 1_073_741_824
-    }
-
-    var body: some View {
-        ThresholdRow(
-            title: L.t("settings.swapThreshold"),
-            value: gbValue,
-            range: 1...16,
-            display: ByteText.format(value)
-        ) { newValue in
-            setValue(UInt64(newValue * 1_073_741_824))
-        }
     }
 }
 

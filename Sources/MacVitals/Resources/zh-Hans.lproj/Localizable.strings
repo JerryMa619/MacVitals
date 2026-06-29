@@ -1,5 +1,6 @@
 "action.activityMonitor" = "活动监视器";
 "action.refresh" = "刷新";
+"action.settings" = "设置";
 "battery.charging" = "充电中";
 "error.notificationsDenied" = "通知权限未授权。";
 "hardware.battery" = "电池";
@@ -28,9 +29,13 @@
 "section.preferences" = "偏好设置";
 "section.trends" = "趋势";
 "settings.launchAtLogin" = "开机启动";
+"settings.alerts" = "提醒";
+"settings.alertsFooter" = "提醒仅在本机触发，并且只在指标跨过阈值时发送。";
+"settings.general" = "通用";
 "settings.memoryThreshold" = "内存提醒";
 "settings.menuBar" = "菜单栏";
 "settings.notifications" = "通知提醒";
+"settings.startup" = "启动";
 "settings.swapThreshold" = "Swap 提醒";
 "status.busy" = "繁忙";
 "status.healthy" = "健康";

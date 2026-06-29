@@ -7,11 +7,14 @@ final class MacVitalsApp: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem?
     private let popover = NSPopover()
     private let monitor = SystemMonitor()
+    private var settingsWindow: NSWindow?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
 
-        let contentView = DashboardView()
+        let contentView = DashboardView { [weak self] in
+            self?.showSettingsWindow()
+        }
             .environmentObject(monitor)
             .frame(width: 380, height: 560)
 
@@ -46,5 +49,23 @@ final class MacVitalsApp: NSObject, NSApplicationDelegate {
 
     func applicationWillTerminate(_ notification: Notification) {
         monitor.stop()
+    }
+
+    private func showSettingsWindow() {
+        if let settingsWindow {
+            settingsWindow.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
+            return
+        }
+
+        let controller = NSHostingController(rootView: SettingsView().environmentObject(monitor))
+        let window = NSWindow(contentViewController: controller)
+        window.title = L.t("action.settings")
+        window.styleMask = [.titled, .closable, .miniaturizable]
+        window.isReleasedWhenClosed = false
+        window.center()
+        settingsWindow = window
+        window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
     }
 }

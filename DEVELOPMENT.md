@@ -9,6 +9,7 @@
 - `SettingsStore.swift`: persisted menu bar and alert preferences.
 - `Localization.swift` and `Resources/*.lproj`: localized UI and notification strings.
 - `DashboardView.swift`: compact SwiftUI status panel.
+- `SettingsView.swift`: dedicated settings window for menu bar, alert, and startup preferences.
 - `Models.swift`: value models for sampled hardware and process data.
 - `Formatters.swift`: display helpers.
 - `MacVitals.xcodeproj`: macOS App target with App Sandbox, app icon, bundle metadata, and shared scheme.
@@ -26,6 +27,7 @@ The dashboard keeps up to 120 in-memory history samples for lightweight trend ch
 - Memory pressure alerts fire only when crossing the configured pressure threshold.
 - Swap alerts fire only when crossing the configured swap threshold.
 - Launch at Login uses `SMAppService.mainApp`.
+- Preferences live in a separate AppKit-hosted SwiftUI settings window, keeping the menu bar popover focused on monitoring.
 
 ## Verification Performed
 

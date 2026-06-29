@@ -1,5 +1,6 @@
 "action.activityMonitor" = "Activity Monitor";
 "action.refresh" = "Refresh";
+"action.settings" = "Settings";
 "battery.charging" = "charging";
 "error.notificationsDenied" = "Notification permission was not granted.";
 "hardware.battery" = "Battery";
@@ -28,9 +29,13 @@
 "section.preferences" = "Preferences";
 "section.trends" = "Trends";
 "settings.launchAtLogin" = "Launch at Login";
+"settings.alerts" = "Alerts";
+"settings.alertsFooter" = "Alerts stay local and only fire when a metric crosses its threshold.";
+"settings.general" = "General";
 "settings.memoryThreshold" = "Memory alert";
 "settings.menuBar" = "Menu bar";
 "settings.notifications" = "Notifications";
+"settings.startup" = "Startup";
 "settings.swapThreshold" = "Swap alert";
 "status.busy" = "Busy";
 "status.healthy" = "Healthy";
