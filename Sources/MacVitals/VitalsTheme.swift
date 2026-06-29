@@ -54,6 +54,43 @@ private struct GridOverlay: Shape {
     }
 }
 
+struct ChartGrid: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let verticalDivisions = 6
+        let horizontalDivisions = 3
+
+        for index in 1..<verticalDivisions {
+            let x = rect.minX + rect.width * CGFloat(index) / CGFloat(verticalDivisions)
+            path.move(to: CGPoint(x: x, y: rect.minY))
+            path.addLine(to: CGPoint(x: x, y: rect.maxY))
+        }
+
+        for index in 1...horizontalDivisions {
+            let y = rect.minY + rect.height * CGFloat(index) / CGFloat(horizontalDivisions + 1)
+            path.move(to: CGPoint(x: rect.minX, y: y))
+            path.addLine(to: CGPoint(x: rect.maxX, y: y))
+        }
+
+        return path
+    }
+}
+
+extension View {
+    func panelStyle(padding: CGFloat = 12) -> some View {
+        self
+            .padding(padding)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(VitalsTheme.panel)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .stroke(VitalsTheme.line, lineWidth: 1)
+            )
+            .shadow(color: VitalsTheme.glow.opacity(0.12), radius: 12, y: 5)
+            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+    }
+}
+
 struct VitalsButtonStyle: ButtonStyle {
     enum Role {
         case normal
@@ -115,4 +152,3 @@ struct VitalsIconButtonStyle: ButtonStyle {
             .overlay(Circle().stroke(VitalsTheme.line, lineWidth: 1))
     }
 }
-

@@ -66,11 +66,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         item.button?.imagePosition = .imageLeading
         item.button?.toolTip = "MacVitals"
 
-        let contentView = DashboardView(openSettings: {})
+        let contentView = MenuBarVitalsView { [weak self] in
+            self?.showDashboard()
+        }
             .environmentObject(monitor)
-            .frame(width: 460, height: 680)
+            .frame(width: 360, height: 520)
         popover.behavior = .transient
-        popover.contentSize = NSSize(width: 460, height: 680)
+        popover.contentSize = NSSize(width: 360, height: 520)
         popover.contentViewController = NSHostingController(rootView: contentView)
 
         monitor.onStatsChanged = { [weak self] stats in
@@ -101,5 +103,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let title = stats.menuBarTitle(for: monitor.settings.menuBarDisplayMode)
         statusItem?.button?.title = title
         statusItem?.button?.toolTip = "MacVitals - \(title)"
+    }
+
+    private func showDashboard() {
+        popover.performClose(nil)
+        monitor?.setFocused(true)
+
+        if let window = NSApp.windows.first(where: { $0.title == "MacVitals" }) {
+            window.makeKeyAndOrderFront(nil)
+        }
+
+        NSApp.activate(ignoringOtherApps: true)
     }
 }

@@ -1,11 +1,16 @@
 "action.activityMonitor" = "Activity Monitor";
 "action.close" = "Close";
 "action.copySnapshot" = "Copy";
+"action.dashboard" = "Open Panel";
 "action.quit" = "Quit MacVitals";
 "action.refresh" = "Refresh";
 "action.settings" = "Settings";
 "battery.charging" = "charging";
 "diagnostics.copied" = "Copied";
+"diagnostics.level.action" = "Action";
+"diagnostics.level.normal" = "Normal";
+"diagnostics.level.watch" = "Watch";
+"diagnostics.live" = "Live Scan";
 "diagnostics.snapshotHelp" = "Copy a local text snapshot for troubleshooting.";
 "error.notificationsDenied" = "Notification permission was not granted.";
 "hardware.battery" = "Battery";
@@ -20,6 +25,7 @@
 "menu.mode.compact" = "Compact";
 "menu.mode.cpu" = "CPU";
 "menu.mode.memoryPressure" = "Memory pressure";
+"menu.trend" = "Pressure trend";
 "menu.mode.usedMemory" = "Used memory";
 "metric.disk" = "Disk";
 "metric.memory" = "Memory";

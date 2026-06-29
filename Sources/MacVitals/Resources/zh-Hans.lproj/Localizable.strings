@@ -1,11 +1,16 @@
 "action.activityMonitor" = "活动监视器";
 "action.close" = "关闭";
 "action.copySnapshot" = "复制";
+"action.dashboard" = "打开面板";
 "action.quit" = "退出 MacVitals";
 "action.refresh" = "刷新";
 "action.settings" = "设置";
 "battery.charging" = "充电中";
 "diagnostics.copied" = "已复制";
+"diagnostics.level.action" = "建议处理";
+"diagnostics.level.normal" = "状态正常";
+"diagnostics.level.watch" = "继续观察";
+"diagnostics.live" = "实时诊断";
 "diagnostics.snapshotHelp" = "复制本机文本快照，用于排查卡顿。";
 "error.notificationsDenied" = "通知权限未授权。";
 "hardware.battery" = "电池";
@@ -20,6 +25,7 @@
 "menu.mode.compact" = "精简";
 "menu.mode.cpu" = "CPU";
 "menu.mode.memoryPressure" = "内存压力";
+"menu.trend" = "压力趋势";
 "menu.mode.usedMemory" = "已用内存";
 "metric.disk" = "磁盘";
 "metric.memory" = "内存";

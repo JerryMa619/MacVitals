@@ -90,40 +90,97 @@ private struct RecommendationSection: View {
     let recommendations: [SystemRecommendation]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            SectionTitle(L.t("section.recommendations"))
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 8) {
+                Image(systemName: "brain.head.profile")
+                    .foregroundStyle(VitalsTheme.accent)
+                    .shadow(color: VitalsTheme.accent.opacity(0.45), radius: 7)
+                SectionTitle(L.t("section.recommendations"))
+                Spacer()
+                Text(L.t("diagnostics.live"))
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundStyle(VitalsTheme.accent.opacity(0.92))
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(VitalsTheme.accent.opacity(0.14))
+                    .clipShape(Capsule())
+            }
 
             VStack(spacing: 8) {
-                ForEach(recommendations) { recommendation in
-                    HStack(alignment: .top, spacing: 9) {
-                        Image(systemName: recommendation.severity.symbolName)
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(color(for: recommendation.severity))
-                            .frame(width: 18)
-
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text(recommendation.title)
-                                .font(.system(size: 12, weight: .medium))
-                            Text(recommendation.detail)
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-
-                        Spacer(minLength: 0)
-                    }
+                ForEach(Array(recommendations.enumerated()), id: \.element.id) { index, recommendation in
+                    DiagnosticCard(index: index + 1, recommendation: recommendation)
                 }
             }
         }
         .panelStyle()
     }
+}
 
-    private func color(for severity: RecommendationSeverity) -> Color {
+private struct DiagnosticCard: View {
+    let index: Int
+    let recommendation: SystemRecommendation
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 10) {
+            ZStack {
+                Circle()
+                    .fill(color.opacity(0.16))
+                Circle()
+                    .stroke(color.opacity(0.45), lineWidth: 1)
+                Image(systemName: recommendation.severity.symbolName)
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(color)
+            }
+            .frame(width: 32, height: 32)
+
+            VStack(alignment: .leading, spacing: 5) {
+                HStack(spacing: 7) {
+                    Text("SCAN-\(String(format: "%02d", index))")
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundStyle(color.opacity(0.9))
+                    Text(label)
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundStyle(.white.opacity(0.5))
+                }
+
+                Text(recommendation.title)
+                    .font(.system(size: 13, weight: .semibold))
+
+                Text(recommendation.detail)
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.58))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 0)
+        }
+        .padding(10)
+        .background(Color.black.opacity(0.2))
+        .overlay(
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .stroke(color.opacity(0.25), lineWidth: 1)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+    }
+
+    private var label: String {
+        switch recommendation.severity {
+        case .healthy: L.t("diagnostics.level.normal")
+        case .notice: L.t("diagnostics.level.watch")
+        case .warning: L.t("diagnostics.level.action")
+        }
+    }
+
+    private var color: Color {
         switch severity {
         case .healthy: .green
         case .notice: .blue
         case .warning: .orange
         }
+    }
+
+    private var severity: RecommendationSeverity {
+        recommendation.severity
     }
 }
 
@@ -300,28 +357,6 @@ private struct Sparkline: View {
                 y: size.height - (CGFloat(value) * size.height)
             )
         }
-    }
-}
-
-private struct ChartGrid: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        let verticalDivisions = 6
-        let horizontalDivisions = 3
-
-        for index in 1..<verticalDivisions {
-            let x = rect.minX + rect.width * CGFloat(index) / CGFloat(verticalDivisions)
-            path.move(to: CGPoint(x: x, y: rect.minY))
-            path.addLine(to: CGPoint(x: x, y: rect.maxY))
-        }
-
-        for index in 1...horizontalDivisions {
-            let y = rect.minY + rect.height * CGFloat(index) / CGFloat(horizontalDivisions + 1)
-            path.move(to: CGPoint(x: rect.minX, y: y))
-            path.addLine(to: CGPoint(x: rect.maxX, y: y))
-        }
-
-        return path
     }
 }
 
@@ -560,20 +595,5 @@ private struct StatRow: View {
                 .monospacedDigit()
         }
         .font(.system(size: 12))
-    }
-}
-
-private extension View {
-    func panelStyle(padding: CGFloat = 12) -> some View {
-        self
-            .padding(padding)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(VitalsTheme.panel)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .stroke(VitalsTheme.line, lineWidth: 1)
-            )
-            .shadow(color: VitalsTheme.glow.opacity(0.12), radius: 12, y: 5)
-            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
     }
 }
