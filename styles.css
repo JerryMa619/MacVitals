@@ -382,7 +382,8 @@ h3 {
 }
 
 .section,
-.privacy-band {
+.privacy-band,
+.early-access {
   width: min(1180px, calc(100% - 36px));
   margin: 0 auto;
   padding: 84px 0;
@@ -418,6 +419,27 @@ h3 {
   gap: 8px;
   margin: 0;
   padding-left: 18px;
+}
+
+.early-access {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  align-items: center;
+  padding: 44px;
+  border: 1px solid rgba(64, 240, 155, 0.24);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(64, 240, 155, 0.12), rgba(79, 215, 255, 0.06)),
+    rgba(255, 255, 255, 0.055);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+}
+
+.early-access p:last-child {
+  max-width: 760px;
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.55;
 }
 
 .split {
@@ -502,7 +524,8 @@ h3 {
 
   .hero,
   .split,
-  .privacy-band {
+  .privacy-band,
+  .early-access {
     grid-template-columns: 1fr;
   }
 
@@ -549,6 +572,7 @@ h3 {
 
   .section,
   .privacy-band,
+  .early-access,
   .site-footer,
   .site-header,
   .page {
