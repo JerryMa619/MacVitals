@@ -20,6 +20,7 @@ All notable MacVitals changes are summarized here.
 - Thermal status monitoring through Apple's public `ProcessInfo.thermalState` API.
 - Language picker with System, English, Simplified Chinese, French, Russian, and German options.
 - Lightweight health diagnostics derived from existing stats and the short in-memory history window.
+- Static product website, privacy policy, and support pages under `docs/` for GitHub Pages and App Store metadata.
 
 ### Changed
 

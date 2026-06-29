@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MacVitals is a lightweight Mac health monitor that explains memory pressure, CPU load, thermal state, disk space, and power impact.">
+  <title>MacVitals - Lightweight Mac Health Monitor</title>
+  <link rel="icon" href="assets/icon.png">
+  <link rel="apple-touch-icon" href="assets/icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="MacVitals home">
+      <img src="assets/icon.png" alt="" width="36" height="36">
+      <span>MacVitals</span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a href="#features">Features</a>
+      <a href="#privacy">Privacy</a>
+      <a href="support.html">Support</a>
+      <a href="https://github.com/JerryMa619/MacVitals">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Native macOS system monitor</p>
+        <h1>MacVitals</h1>
+        <p class="lead">A lightweight Mac health monitor that explains why your Mac feels slow, before you start closing things at random.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="https://github.com/JerryMa619/MacVitals">View on GitHub</a>
+          <a class="button secondary" href="#features">Explore features</a>
+        </div>
+        <dl class="hero-facts">
+          <div>
+            <dt>Private</dt>
+            <dd>No analytics or upload</dd>
+          </div>
+          <div>
+            <dt>Lightweight</dt>
+            <dd>Short local history only</dd>
+          </div>
+          <div>
+            <dt>App Store ready</dt>
+            <dd>Public macOS APIs</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="product-visual" aria-label="MacVitals dashboard preview">
+        <div class="window-frame">
+          <div class="window-bar">
+            <span></span><span></span><span></span>
+            <strong>MacVitals</strong>
+          </div>
+          <div class="dashboard-preview">
+            <div class="preview-header">
+              <div>
+                <span class="muted">LIVE SCAN</span>
+                <h2>System pressure looks normal</h2>
+              </div>
+              <span class="status-chip">Healthy</span>
+            </div>
+            <div class="rings">
+              <div class="ring green" style="--value: 69">
+                <strong>69%</strong>
+                <span>Memory</span>
+              </div>
+              <div class="ring blue" style="--value: 24">
+                <strong>24%</strong>
+                <span>CPU</span>
+              </div>
+              <div class="ring violet" style="--value: 53">
+                <strong>47GB</strong>
+                <span>Disk free</span>
+              </div>
+            </div>
+            <div class="scan-grid">
+              <article>
+                <span>Health score</span>
+                <strong>82</strong>
+                <p>Memory, swap, CPU, disk, and thermal pressure blended locally.</p>
+              </article>
+              <article>
+                <span>Likely bottleneck</span>
+                <strong>Clear</strong>
+                <p>Current pressure is spread evenly across the system.</p>
+              </article>
+            </div>
+            <div class="sparkline" aria-hidden="true">
+              <span style="height: 24%"></span>
+              <span style="height: 38%"></span>
+              <span style="height: 31%"></span>
+              <span style="height: 52%"></span>
+              <span style="height: 44%"></span>
+              <span style="height: 62%"></span>
+              <span style="height: 47%"></span>
+              <span style="height: 40%"></span>
+              <span style="height: 35%"></span>
+              <span style="height: 29%"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <div class="section-heading">
+        <p class="eyebrow">What it watches</p>
+        <h2>Real-time Mac vitals without the drama.</h2>
+      </div>
+      <div class="feature-grid">
+        <article>
+          <h3>Memory pressure explained</h3>
+          <p>See used memory, swap, compressed memory, cache, and high-memory apps in one clean view.</p>
+        </article>
+        <article>
+          <h3>Lightweight health diagnostics</h3>
+          <p>MacVitals derives a health score, pressure trend, likely bottleneck, and power load from existing samples.</p>
+        </article>
+        <article>
+          <h3>Menu bar monitor</h3>
+          <p>Keep an eye on memory, CPU, disk, and thermal state from a compact menu bar dashboard.</p>
+        </article>
+        <article>
+          <h3>No fake cleanup claims</h3>
+          <p>MacVitals gives transparent recommendations and opens Activity Monitor when you want to act.</p>
+        </article>
+        <article>
+          <h3>Low-power by design</h3>
+          <p>Sampling slows down in the background and uses a short in-memory history window.</p>
+        </article>
+        <article>
+          <h3>Localized interface</h3>
+          <p>English, Simplified Chinese, French, Russian, and German are included, with a System language option.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="privacy" class="privacy-band">
+      <div>
+        <p class="eyebrow">Private by default</p>
+        <h2>Your Mac data stays on your Mac.</h2>
+      </div>
+      <ul>
+        <li>No account required.</li>
+        <li>No analytics or tracking in the MVP.</li>
+        <li>No diagnostic upload.</li>
+        <li>No automatic process killing or file deletion.</li>
+      </ul>
+      <a class="button secondary" href="privacy.html">Read privacy policy</a>
+    </section>
+
+    <section class="section split">
+      <div>
+        <p class="eyebrow">Launch status</p>
+        <h2>Built for TestFlight, then Mac App Store.</h2>
+      </div>
+      <div class="timeline">
+        <div>
+          <span>01</span>
+          <p>Test local builds and refine performance.</p>
+        </div>
+        <div>
+          <span>02</span>
+          <p>Prepare App Store screenshots, privacy details, and review notes.</p>
+        </div>
+        <div>
+          <span>03</span>
+          <p>Release to TestFlight for real MacBook users.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>© 2026 MacVitals</span>
+    <div>
+      <a href="privacy.html">Privacy</a>
+      <a href="support.html">Support</a>
+      <a href="https://github.com/JerryMa619/MacVitals">GitHub</a>
+    </div>
+  </footer>
+</body>
+</html>

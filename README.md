@@ -2,6 +2,8 @@
 
 MacVitals is a lightweight native macOS menu bar monitor for memory, CPU, disk, battery, network, and high-memory apps.
 
+Website: [MacVitals GitHub Pages](https://jerryma619.github.io/MacVitals/)
+
 ## Current Scope
 
 - Native Swift + SwiftUI + AppKit menu bar app.
