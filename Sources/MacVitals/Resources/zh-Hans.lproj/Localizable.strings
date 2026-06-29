@@ -51,11 +51,11 @@
 "recommendation.memoryTight.detail" = "建议先检查高占用应用和浏览器标签，再继续打开大型任务。";
 "recommendation.memoryTight.title" = "内存压力偏紧";
 "sampling.mode.balanced" = "均衡";
-"sampling.mode.balanced.detail" = "适合日常常驻使用的自适应采样。";
+"sampling.mode.balanced.detail" = "窗口可见时快速刷新，后台自动降低频率。";
 "sampling.mode.lowPower" = "低功耗";
 "sampling.mode.lowPower.detail" = "后台降低采样频率，减少资源开销。";
 "sampling.mode.responsive" = "实时";
-"sampling.mode.responsive.detail" = "MacVitals 可见时更频繁刷新。";
+"sampling.mode.responsive.detail" = "窗口可见时约每半秒刷新一次，适合临时观察压力变化。";
 "section.hardware" = "硬件";
 "section.heavyApps" = "高占用应用";
 "section.diagnostics" = "诊断";

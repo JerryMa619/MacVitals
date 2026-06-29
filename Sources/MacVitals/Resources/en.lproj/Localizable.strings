@@ -51,11 +51,11 @@
 "recommendation.memoryTight.detail" = "Review heavy apps and browser tabs before opening more demanding work.";
 "recommendation.memoryTight.title" = "Memory pressure is tight";
 "sampling.mode.balanced" = "Balanced";
-"sampling.mode.balanced.detail" = "Adaptive sampling for everyday use.";
+"sampling.mode.balanced.detail" = "Refreshes quickly while visible and slows down in the background.";
 "sampling.mode.lowPower" = "Low Power";
 "sampling.mode.lowPower.detail" = "Samples less often in the background to reduce overhead.";
 "sampling.mode.responsive" = "Live";
-"sampling.mode.responsive.detail" = "Updates more often while MacVitals is visible.";
+"sampling.mode.responsive.detail" = "Refreshes about twice per second while visible for short live checks.";
 "section.hardware" = "Hardware";
 "section.heavyApps" = "Heavy Apps";
 "section.diagnostics" = "Diagnostics";

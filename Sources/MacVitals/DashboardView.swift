@@ -34,6 +34,12 @@ struct DashboardView: View {
             }
         }
         .preferredColorScheme(.dark)
+        .onAppear {
+            monitor.setFocused(true)
+        }
+        .onDisappear {
+            monitor.setFocused(false)
+        }
     }
 
     private var header: some View {

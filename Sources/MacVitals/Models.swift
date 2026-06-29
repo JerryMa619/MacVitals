@@ -82,12 +82,12 @@ enum SamplingMode: String, CaseIterable, Identifiable {
 
     func interval(isFocused: Bool) -> TimeInterval {
         switch (self, isFocused) {
-        case (.balanced, true): 1.5
-        case (.balanced, false): 4.0
-        case (.lowPower, true): 3.0
-        case (.lowPower, false): 10.0
-        case (.responsive, true): 1.0
-        case (.responsive, false): 2.5
+        case (.balanced, true): 0.8
+        case (.balanced, false): 3.0
+        case (.lowPower, true): 1.5
+        case (.lowPower, false): 8.0
+        case (.responsive, true): 0.5
+        case (.responsive, false): 1.5
         }
     }
 }

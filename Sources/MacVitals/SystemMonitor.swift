@@ -30,6 +30,7 @@ final class SystemMonitor: ObservableObject {
     func start() {
         syncLaunchAtLogin()
         sample()
+        scheduleWarmupSample()
         scheduleTimer()
     }
 
@@ -39,7 +40,12 @@ final class SystemMonitor: ObservableObject {
     }
 
     func setFocused(_ focused: Bool) {
+        guard isFocused != focused else { return }
         isFocused = focused
+        if focused {
+            sample()
+            scheduleWarmupSample()
+        }
         scheduleTimer()
     }
 
@@ -84,6 +90,7 @@ final class SystemMonitor: ObservableObject {
     func setSamplingMode(_ mode: SamplingMode) {
         settings.samplingMode = mode
         saveSettings()
+        sample()
         scheduleTimer()
     }
 
@@ -118,6 +125,14 @@ final class SystemMonitor: ObservableObject {
             Task { @MainActor in
                 self?.sample()
             }
+        }
+        timer?.tolerance = interval * 0.1
+    }
+
+    private func scheduleWarmupSample() {
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(350))
+            sample()
         }
     }
 
