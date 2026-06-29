@@ -1,0 +1,36 @@
+# MacVitals Roadmap
+
+## 0.1 Prototype
+
+- Menu bar memory pressure indicator.
+- Popover dashboard for memory, CPU, disk, battery, network, and heavy apps.
+- Manual refresh and Activity Monitor handoff.
+- Public API only.
+
+## 0.2 Usability
+
+- User preferences for menu bar display: memory pressure, used memory, CPU, or compact dot.
+- Notification thresholds for memory pressure and swap.
+- Launch at login.
+- Dark and light appearance QA.
+- Localized Chinese and English UI.
+
+## 0.3 Diagnostics
+
+- Per-app recommendations when memory pressure and swap both rise.
+- Short historical charts for memory, CPU, and network.
+- Low-power sampling mode.
+- Export diagnostic snapshot as plain text.
+
+## 1.0 App Store Candidate
+
+- App sandbox enabled in a full Xcode app target.
+- No private APIs.
+- No forced process killing.
+- No misleading cleanup claims.
+- Privacy nutrition labels: no collection by default.
+- Signed, notarized, archived, and tested on Apple silicon and Intel Macs if supported.
+
+## Public API Limits
+
+Some hardware details, especially fan speed, SMC temperature sensors, GPU counters, and deep per-process energy metrics, are not reliably available through App Store-safe public APIs. MacVitals should prefer trustworthy public metrics over fragile private sensor access.
