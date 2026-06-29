@@ -17,6 +17,8 @@
 
 The monitor samples every 4 seconds in the background and every 1.5 seconds while the popover is open. This keeps the menu bar responsive without constantly waking the system.
 
+The dashboard keeps up to 120 in-memory history samples for lightweight trend charts. Nothing is written to disk for historical metrics.
+
 ## Preferences
 
 - Menu bar display mode is persisted in `UserDefaults`.

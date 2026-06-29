@@ -7,6 +7,7 @@ import UserNotifications
 @MainActor
 final class SystemMonitor: ObservableObject {
     @Published private(set) var stats = SystemStats()
+    @Published private(set) var history: [HistorySample] = []
     @Published private(set) var settings: MonitorSettings
     @Published private(set) var launchAtLoginEnabled = LaunchAtLoginController.isEnabled
     @Published private(set) var settingsError: String?
@@ -18,6 +19,7 @@ final class SystemMonitor: ObservableObject {
     private let settingsStore = SettingsStore()
     private let notificationController = NotificationController()
     private var isFocused = false
+    private let maxHistorySamples = 120
 
     init() {
         settings = settingsStore.load()
@@ -104,12 +106,28 @@ final class SystemMonitor: ObservableObject {
 
     private func sample() {
         stats = sampler.sample()
+        appendHistorySample(from: stats)
         notificationController.evaluate(stats: stats, settings: settings)
         onStatsChanged?(stats)
     }
 
     private func saveSettings() {
         settingsStore.save(settings)
+    }
+
+    private func appendHistorySample(from stats: SystemStats) {
+        history.append(
+            HistorySample(
+                sampledAt: stats.sampledAt,
+                memoryPressure: stats.memory.pressure,
+                cpuActive: stats.cpu.activePercent,
+                swapUsedBytes: stats.memory.swapUsedBytes
+            )
+        )
+
+        if history.count > maxHistorySamples {
+            history.removeFirst(history.count - maxHistorySamples)
+        }
     }
 }
 

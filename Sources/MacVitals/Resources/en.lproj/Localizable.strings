@@ -26,6 +26,7 @@
 "section.heavyApps" = "Heavy Apps";
 "section.memory" = "Memory";
 "section.preferences" = "Preferences";
+"section.trends" = "Trends";
 "settings.launchAtLogin" = "Launch at Login";
 "settings.memoryThreshold" = "Memory alert";
 "settings.menuBar" = "Menu bar";
@@ -34,3 +35,4 @@
 "status.busy" = "Busy";
 "status.healthy" = "Healthy";
 "status.tight" = "Tight";
+"trends.window" = "Recent";

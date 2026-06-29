@@ -26,6 +26,7 @@
 "section.heavyApps" = "高占用应用";
 "section.memory" = "内存";
 "section.preferences" = "偏好设置";
+"section.trends" = "趋势";
 "settings.launchAtLogin" = "开机启动";
 "settings.memoryThreshold" = "内存提醒";
 "settings.menuBar" = "菜单栏";
@@ -34,3 +35,4 @@
 "status.busy" = "繁忙";
 "status.healthy" = "健康";
 "status.tight" = "吃紧";
+"trends.window" = "最近";

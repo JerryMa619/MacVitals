@@ -20,7 +20,7 @@
 ## 0.3 Diagnostics
 
 - Per-app recommendations when memory pressure and swap both rise.
-- Short historical charts for memory, CPU, and network.
+- Short historical charts for memory, CPU, and swap.
 - Low-power sampling mode.
 - Export diagnostic snapshot as plain text.
 

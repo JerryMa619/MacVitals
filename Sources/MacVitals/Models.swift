@@ -27,6 +27,14 @@ struct SystemStats {
     }
 }
 
+struct HistorySample: Identifiable {
+    let id = UUID()
+    var sampledAt: Date
+    var memoryPressure: Double
+    var cpuActive: Double
+    var swapUsedBytes: UInt64
+}
+
 enum MenuBarDisplayMode: String, CaseIterable, Identifiable {
     case memoryPressure
     case usedMemory

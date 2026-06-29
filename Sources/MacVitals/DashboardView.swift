@@ -10,6 +10,7 @@ struct DashboardView: View {
             ScrollView {
                 VStack(spacing: 14) {
                     OverviewSection(stats: monitor.stats)
+                    TrendSection(history: monitor.history)
                     MemorySection(memory: monitor.stats.memory)
                     HardwareSection(stats: monitor.stats)
                     PreferencesSection(
@@ -72,6 +73,126 @@ struct DashboardView: View {
         }
         .buttonStyle(.borderless)
         .padding(12)
+    }
+}
+
+private struct TrendSection: View {
+    let history: [HistorySample]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                SectionTitle(L.t("section.trends"))
+                Spacer()
+                Text(L.t("trends.window"))
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+
+            VStack(spacing: 10) {
+                TrendChart(
+                    title: L.t("metric.memory"),
+                    value: history.last?.memoryPressure ?? 0,
+                    values: history.map(\.memoryPressure),
+                    tint: .green,
+                    valueText: (history.last?.memoryPressure ?? 0).percentText
+                )
+                TrendChart(
+                    title: "CPU",
+                    value: history.last?.cpuActive ?? 0,
+                    values: history.map(\.cpuActive),
+                    tint: .blue,
+                    valueText: (history.last?.cpuActive ?? 0).percentText
+                )
+                TrendChart(
+                    title: "Swap",
+                    value: normalizedSwap,
+                    values: normalizedSwapHistory,
+                    tint: .orange,
+                    valueText: ByteText.format(history.last?.swapUsedBytes ?? 0)
+                )
+            }
+        }
+        .panelStyle()
+    }
+
+    private var normalizedSwapHistory: [Double] {
+        let maxSwap = max(history.map(\.swapUsedBytes).max() ?? 0, 1)
+        return history.map { Double($0.swapUsedBytes) / Double(maxSwap) }
+    }
+
+    private var normalizedSwap: Double {
+        normalizedSwapHistory.last ?? 0
+    }
+}
+
+private struct TrendChart: View {
+    let title: String
+    let value: Double
+    let values: [Double]
+    let tint: Color
+    let valueText: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text(title)
+                    .font(.system(size: 12, weight: .medium))
+                Spacer()
+                Text(valueText)
+                    .font(.system(size: 12))
+                    .foregroundStyle(.secondary)
+                    .monospacedDigit()
+            }
+
+            Sparkline(values: values, tint: tint)
+                .frame(height: 38)
+                .accessibilityLabel(title)
+                .accessibilityValue(valueText)
+        }
+    }
+}
+
+private struct Sparkline: View {
+    let values: [Double]
+    let tint: Color
+
+    var body: some View {
+        GeometryReader { proxy in
+            let points = chartPoints(size: proxy.size)
+
+            ZStack {
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .fill(Color(nsColor: .windowBackgroundColor))
+
+                if points.count > 1 {
+                    Path { path in
+                        path.move(to: points[0])
+                        for point in points.dropFirst() {
+                            path.addLine(to: point)
+                        }
+                    }
+                    .stroke(tint, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                } else {
+                    Capsule()
+                        .fill(tint.opacity(0.35))
+                        .frame(width: 28, height: 4)
+                }
+            }
+        }
+    }
+
+    private func chartPoints(size: CGSize) -> [CGPoint] {
+        guard !values.isEmpty, size.width > 0, size.height > 0 else { return [] }
+        let clipped = values.map { min(1, max(0, $0)) }
+        let step = clipped.count > 1 ? size.width / CGFloat(clipped.count - 1) : 0
+
+        return clipped.enumerated().map { index, value in
+            CGPoint(
+                x: CGFloat(index) * step,
+                y: size.height - (CGFloat(value) * size.height)
+            )
+        }
     }
 }
 

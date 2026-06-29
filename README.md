@@ -11,6 +11,7 @@ MacVitals is a lightweight native macOS menu bar monitor for memory, CPU, disk, 
 - Launch at Login preference using Apple's public ServiceManagement API.
 - Menu bar display modes: memory pressure, used memory, CPU, or compact.
 - Local threshold notifications for high memory pressure and high swap usage.
+- Short in-memory trend charts for memory pressure, CPU, and swap.
 - English and Simplified Chinese localization resources.
 - Conservative "optimize" action that surfaces heavy apps and opens Activity Monitor instead of force-killing processes.
 
