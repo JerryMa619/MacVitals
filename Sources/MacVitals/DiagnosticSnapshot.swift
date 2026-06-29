@@ -21,6 +21,11 @@ enum DiagnosticSnapshot {
             lines.append("- \(recommendation.title): \(recommendation.detail)")
         }
         lines.append("")
+        lines.append("Health Diagnostics")
+        for diagnostic in stats.diagnostics(history: history) {
+            lines.append("- \(diagnostic.title) [\(diagnostic.valueText)]: \(diagnostic.detail)")
+        }
+        lines.append("")
         lines.append("Memory")
         lines.append("- Total: \(ByteText.format(stats.memory.totalBytes))")
         lines.append("- Used: \(ByteText.format(stats.memory.usedBytes))")

@@ -19,6 +19,7 @@ All notable MacVitals changes are summarized here.
 - App icon, sandbox entitlement, launch-at-login support, and App Store checklist.
 - Thermal status monitoring through Apple's public `ProcessInfo.thermalState` API.
 - Language picker with System, English, Simplified Chinese, French, Russian, and German options.
+- Lightweight health diagnostics derived from existing stats and the short in-memory history window.
 
 ### Changed
 
@@ -29,6 +30,7 @@ All notable MacVitals changes are summarized here.
 - Enlarged the primary memory ring and trend chart presentation to make the app feel more like a live system console.
 - Added a richer menu bar mini dashboard with CPU, thermal, disk, memory pressure trend, and top insight summaries.
 - Disabled Xcode's debug dynamic library injection for the project to avoid blank windows when launching the debug `.app` directly.
+- Diagnostic snapshots now include the derived health score, pressure trend, bottleneck, and power load summary.
 
 ### Notes
 
@@ -75,6 +77,14 @@ All notable MacVitals changes are summarized here.
 - Added a language picker with a System Default option.
 - Added thermal state monitoring using public Apple APIs.
 - Documented that private sensor temperature readings are intentionally avoided for App Store safety.
+
+### Low-Overhead Diagnostics
+
+- Added a health score that blends memory pressure, swap, CPU, disk pressure, and thermal state.
+- Added short-window pressure trend detection without increasing the stored history size.
+- Added likely bottleneck detection for memory, CPU, disk space, or thermal pressure.
+- Added a lightweight power-load estimate based on CPU, thermal state, and network activity.
+- Kept diagnostics derived from already-collected samples to avoid adding persistent memory overhead.
 
 ### GitHub And Release Preparation
 

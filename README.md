@@ -16,6 +16,7 @@ MacVitals is a lightweight native macOS menu bar monitor for memory, CPU, disk, 
 - Local threshold notifications for high memory pressure and high swap usage.
 - Short in-memory trend charts for memory pressure, CPU, and swap.
 - Explainable recommendations for high memory pressure, swap, CPU, and disk constraints.
+- Lightweight health diagnostics derived from existing samples: health score, pressure trend, likely bottleneck, and power load.
 - Local diagnostic snapshot copy for troubleshooting.
 - Language picker with System, English, Simplified Chinese, French, Russian, and German options.
 - Futuristic dark dashboard with enlarged rings, trend charts, and a compact menu bar mini dashboard.

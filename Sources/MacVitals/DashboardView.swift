@@ -15,6 +15,7 @@ struct DashboardView: View {
                 ScrollView {
                     VStack(spacing: 16) {
                         OverviewSection(stats: monitor.stats)
+                        HealthDiagnosticsSection(diagnostics: monitor.stats.diagnostics(history: monitor.history))
                         TrendSection(history: monitor.history)
                         RecommendationSection(recommendations: monitor.stats.recommendations)
                         MemorySection(memory: monitor.stats.memory)
@@ -83,6 +84,82 @@ struct DashboardView: View {
             .buttonStyle(VitalsButtonStyle())
         }
         .padding(12)
+    }
+}
+
+private struct HealthDiagnosticsSection: View {
+    let diagnostics: [HealthDiagnostic]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 8) {
+                Image(systemName: "waveform.path.ecg.rectangle")
+                    .foregroundStyle(VitalsTheme.accent)
+                    .shadow(color: VitalsTheme.accent.opacity(0.45), radius: 7)
+                SectionTitle(L.t("section.healthDiagnostics"))
+                Spacer()
+                Text(L.t("diagnostics.lowOverhead"))
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundStyle(.white.opacity(0.54))
+            }
+
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                ForEach(diagnostics) { diagnostic in
+                    HealthDiagnosticTile(diagnostic: diagnostic)
+                }
+            }
+        }
+        .panelStyle(padding: 14)
+    }
+}
+
+private struct HealthDiagnosticTile: View {
+    let diagnostic: HealthDiagnostic
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 8) {
+                Image(systemName: diagnostic.symbolName)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(color)
+                    .frame(width: 18)
+                Spacer()
+                Text(diagnostic.valueText)
+                    .font(.system(size: 15, weight: .bold))
+                    .foregroundStyle(color)
+                    .monospacedDigit()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.72)
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(diagnostic.title)
+                    .font(.system(size: 12, weight: .semibold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.82)
+                Text(diagnostic.detail)
+                    .font(.caption2)
+                    .foregroundStyle(.white.opacity(0.55))
+                    .lineLimit(3)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .frame(minHeight: 92, alignment: .topLeading)
+        .padding(10)
+        .background(Color.black.opacity(0.22))
+        .overlay(
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .stroke(color.opacity(0.26), lineWidth: 1)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+    }
+
+    private var color: Color {
+        switch diagnostic.severity {
+        case .healthy: .green
+        case .notice: .blue
+        case .warning: .orange
+        }
     }
 }
 

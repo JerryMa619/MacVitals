@@ -30,6 +30,10 @@ struct SystemStats {
     var recommendations: [SystemRecommendation] {
         SystemRecommendation.make(for: self)
     }
+
+    func diagnostics(history: [HistorySample]) -> [HealthDiagnostic] {
+        HealthDiagnostic.make(stats: self, history: history)
+    }
 }
 
 struct HistorySample: Identifiable {
@@ -381,5 +385,225 @@ struct SystemRecommendation: Identifiable {
         }
 
         return Array(recommendations.prefix(3))
+    }
+}
+
+struct HealthDiagnostic: Identifiable {
+    let id: String
+    let severity: RecommendationSeverity
+    let symbolName: String
+    let title: String
+    let detail: String
+    let valueText: String
+
+    static func make(stats: SystemStats, history: [HistorySample]) -> [HealthDiagnostic] {
+        [
+            healthScore(stats: stats),
+            pressureTrend(history: history),
+            bottleneck(stats: stats),
+            powerLoad(stats: stats)
+        ]
+    }
+
+    private static func healthScore(stats: SystemStats) -> HealthDiagnostic {
+        let swapPressure = min(1, Double(stats.memory.swapUsedBytes) / Double(2 * 1024 * 1024 * 1024))
+        let diskPressure = max(0, (stats.disk.usedPercent - 0.82) / 0.18)
+        let thermalPenalty: Double
+
+        switch stats.thermal.state {
+        case .nominal: thermalPenalty = 0
+        case .fair: thermalPenalty = 0.08
+        case .serious: thermalPenalty = 0.18
+        case .critical: thermalPenalty = 0.26
+        @unknown default: thermalPenalty = 0.08
+        }
+
+        let risk =
+            stats.memory.pressure * 0.42 +
+            swapPressure * 0.22 +
+            stats.cpu.activePercent * 0.18 +
+            diskPressure * 0.10 +
+            thermalPenalty
+
+        let score = Int(max(0, min(100, (1 - risk) * 100)).rounded())
+        let severity: RecommendationSeverity = score >= 72 ? .healthy : (score >= 48 ? .notice : .warning)
+
+        return HealthDiagnostic(
+            id: "health-score",
+            severity: severity,
+            symbolName: "gauge.medium",
+            title: L.t("diagnostic.healthScore.title"),
+            detail: L.t("diagnostic.healthScore.detail"),
+            valueText: "\(score)"
+        )
+    }
+
+    private static func pressureTrend(history: [HistorySample]) -> HealthDiagnostic {
+        let values = history.map(\.memoryPressure)
+        guard values.count >= 8 else {
+            return HealthDiagnostic(
+                id: "pressure-trend",
+                severity: .healthy,
+                symbolName: "chart.line.uptrend.xyaxis",
+                title: L.t("diagnostic.trend.warming.title"),
+                detail: L.t("diagnostic.trend.warming.detail"),
+                valueText: "--"
+            )
+        }
+
+        let window = min(16, values.count / 2)
+        let recent = average(Array(values.suffix(window)))
+        let previous = average(Array(values.dropLast(window).suffix(window)))
+        let delta = recent - previous
+
+        if delta >= 0.08 {
+            return HealthDiagnostic(
+                id: "pressure-trend",
+                severity: .notice,
+                symbolName: "arrow.up.right",
+                title: L.t("diagnostic.trend.rising.title"),
+                detail: String(format: L.t("diagnostic.trend.rising.detail"), abs(delta).percentText),
+                valueText: "+\(abs(delta).percentText)"
+            )
+        }
+
+        if delta <= -0.08 {
+            return HealthDiagnostic(
+                id: "pressure-trend",
+                severity: .healthy,
+                symbolName: "arrow.down.right",
+                title: L.t("diagnostic.trend.easing.title"),
+                detail: String(format: L.t("diagnostic.trend.easing.detail"), abs(delta).percentText),
+                valueText: "-\(abs(delta).percentText)"
+            )
+        }
+
+        return HealthDiagnostic(
+            id: "pressure-trend",
+            severity: .healthy,
+            symbolName: "equal",
+            title: L.t("diagnostic.trend.stable.title"),
+            detail: L.t("diagnostic.trend.stable.detail"),
+            valueText: "0%"
+        )
+    }
+
+    private static func bottleneck(stats: SystemStats) -> HealthDiagnostic {
+        let swapPressure = min(1, Double(stats.memory.swapUsedBytes) / Double(2 * 1024 * 1024 * 1024))
+        let memoryScore = stats.memory.pressure + swapPressure * 0.5
+        let cpuScore = stats.cpu.activePercent
+        let diskScore = stats.disk.usedPercent >= 0.9 ? stats.disk.usedPercent : 0
+        let thermalScore: Double
+
+        switch stats.thermal.state {
+        case .nominal: thermalScore = 0
+        case .fair: thermalScore = 0.72
+        case .serious: thermalScore = 0.92
+        case .critical: thermalScore = 1
+        @unknown default: thermalScore = 0.5
+        }
+
+        let candidates = [
+            ("memory", memoryScore),
+            ("cpu", cpuScore),
+            ("disk", diskScore),
+            ("thermal", thermalScore)
+        ]
+        let top = candidates.max { $0.1 < $1.1 } ?? ("none", 0)
+
+        guard top.1 >= 0.72 else {
+            return HealthDiagnostic(
+                id: "bottleneck",
+                severity: .healthy,
+                symbolName: "checkmark.seal",
+                title: L.t("diagnostic.bottleneck.none.title"),
+                detail: L.t("diagnostic.bottleneck.none.detail"),
+                valueText: L.t("diagnostic.bottleneck.none.value")
+            )
+        }
+
+        let severity: RecommendationSeverity = top.1 >= 0.9 ? .warning : .notice
+        let valueText: String
+
+        switch top.0 {
+        case "memory":
+            valueText = stats.memory.pressure.percentText
+        case "cpu":
+            valueText = stats.cpu.activePercent.percentText
+        case "disk":
+            valueText = ByteText.format(stats.disk.freeBytes)
+        default:
+            valueText = stats.thermal.title
+        }
+
+        return HealthDiagnostic(
+            id: "bottleneck",
+            severity: severity,
+            symbolName: symbolName(for: top.0),
+            title: L.t("diagnostic.bottleneck.\(top.0).title"),
+            detail: L.t("diagnostic.bottleneck.\(top.0).detail"),
+            valueText: valueText
+        )
+    }
+
+    private static func powerLoad(stats: SystemStats) -> HealthDiagnostic {
+        let networkLoad = min(1, Double(stats.network.receivedBytesPerSecond + stats.network.sentBytesPerSecond) / 20_000_000)
+        let thermalLoad: Double
+
+        switch stats.thermal.state {
+        case .nominal: thermalLoad = 0
+        case .fair: thermalLoad = 0.35
+        case .serious: thermalLoad = 0.75
+        case .critical: thermalLoad = 1
+        @unknown default: thermalLoad = 0.25
+        }
+
+        let load = stats.cpu.activePercent * 0.65 + thermalLoad * 0.25 + networkLoad * 0.10
+
+        if load >= 0.72 {
+            return HealthDiagnostic(
+                id: "power-load",
+                severity: .notice,
+                symbolName: "bolt.fill",
+                title: L.t("diagnostic.power.high.title"),
+                detail: L.t("diagnostic.power.high.detail"),
+                valueText: load.percentText
+            )
+        }
+
+        if load >= 0.42 {
+            return HealthDiagnostic(
+                id: "power-load",
+                severity: .healthy,
+                symbolName: "bolt",
+                title: L.t("diagnostic.power.moderate.title"),
+                detail: L.t("diagnostic.power.moderate.detail"),
+                valueText: load.percentText
+            )
+        }
+
+        return HealthDiagnostic(
+            id: "power-load",
+            severity: .healthy,
+            symbolName: "leaf",
+            title: L.t("diagnostic.power.low.title"),
+            detail: L.t("diagnostic.power.low.detail"),
+            valueText: load.percentText
+        )
+    }
+
+    private static func average(_ values: [Double]) -> Double {
+        guard !values.isEmpty else { return 0 }
+        return values.reduce(0, +) / Double(values.count)
+    }
+
+    private static func symbolName(for bottleneck: String) -> String {
+        switch bottleneck {
+        case "memory": "memorychip"
+        case "cpu": "cpu"
+        case "disk": "internaldrive"
+        case "thermal": "thermometer.high"
+        default: "checkmark.seal"
+        }
     }
 }
