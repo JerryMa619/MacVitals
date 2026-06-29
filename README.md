@@ -20,6 +20,8 @@ MacVitals is a lightweight native macOS menu bar monitor for memory, CPU, disk, 
 - English and Simplified Chinese localization resources.
 - Conservative "optimize" action that surfaces heavy apps and opens Activity Monitor instead of force-killing processes.
 
+See [CHANGELOG.md](CHANGELOG.md) for the development history.
+
 ## Run
 
 Open `MacVitals.xcodeproj` in Xcode and run the `MacVitals` scheme.
