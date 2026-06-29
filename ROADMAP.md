@@ -12,7 +12,7 @@
 - Native Xcode macOS app project.
 - App icon and menu bar agent bundle metadata.
 - Launch at Login preference.
-- User preferences for menu bar display: memory pressure, used memory, CPU, or compact dot.
+- User preferences for menu bar display: memory pressure, used memory, CPU, or compact.
 - Notification thresholds for memory pressure and swap.
 - Dark and light appearance QA.
 - Localized Chinese and English UI.

@@ -18,6 +18,11 @@
 		200000000000000000000009 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 300000000000000000000009 /* IOKit.framework */; };
 		200000000000000000000010 /* LaunchAtLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000013 /* LaunchAtLoginController.swift */; };
 		200000000000000000000011 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 300000000000000000000014 /* ServiceManagement.framework */; };
+		200000000000000000000012 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000015 /* Localization.swift */; };
+		200000000000000000000013 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000016 /* SettingsStore.swift */; };
+		200000000000000000000014 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000017 /* NotificationController.swift */; };
+		200000000000000000000015 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 300000000000000000000018 /* UserNotifications.framework */; };
+		200000000000000000000016 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 900000000000000000000001 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +40,12 @@
 		300000000000000000000012 /* MacVitals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacVitals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		300000000000000000000013 /* LaunchAtLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginController.swift; sourceTree = "<group>"; };
 		300000000000000000000014 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
+		300000000000000000000015 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
+		300000000000000000000016 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		300000000000000000000017 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		300000000000000000000018 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		300000000000000000000019 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Sources/MacVitals/Resources/en.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		300000000000000000000020 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "Sources/MacVitals/Resources/zh-Hans.lproj/Localizable.strings"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +57,7 @@
 				200000000000000000000008 /* SwiftUI.framework in Frameworks */,
 				200000000000000000000009 /* IOKit.framework in Frameworks */,
 				200000000000000000000011 /* ServiceManagement.framework in Frameworks */,
+				200000000000000000000015 /* UserNotifications.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +99,10 @@
 				300000000000000000000002 /* DashboardView.swift */,
 				300000000000000000000003 /* SystemMonitor.swift */,
 				300000000000000000000013 /* LaunchAtLoginController.swift */,
+				300000000000000000000017 /* NotificationController.swift */,
+				300000000000000000000016 /* SettingsStore.swift */,
+				300000000000000000000015 /* Localization.swift */,
+				900000000000000000000001 /* Localizable.strings */,
 				300000000000000000000004 /* Models.swift */,
 				300000000000000000000005 /* Formatters.swift */,
 			);
@@ -100,6 +116,7 @@
 				300000000000000000000008 /* SwiftUI.framework */,
 				300000000000000000000009 /* IOKit.framework */,
 				300000000000000000000014 /* ServiceManagement.framework */,
+				300000000000000000000018 /* UserNotifications.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -154,6 +171,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 500000000000000000000001;
 			minimizedProjectReferenceProxies = 1;
@@ -173,6 +191,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				200000000000000000000006 /* Assets.xcassets in Resources */,
+				200000000000000000000016 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,12 +206,27 @@
 				200000000000000000000002 /* DashboardView.swift in Sources */,
 				200000000000000000000003 /* SystemMonitor.swift in Sources */,
 				200000000000000000000010 /* LaunchAtLoginController.swift in Sources */,
+				200000000000000000000014 /* NotificationController.swift in Sources */,
+				200000000000000000000013 /* SettingsStore.swift in Sources */,
+				200000000000000000000012 /* Localization.swift in Sources */,
 				200000000000000000000004 /* Models.swift in Sources */,
 				200000000000000000000005 /* Formatters.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		900000000000000000000001 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				300000000000000000000019 /* en */,
+				300000000000000000000020 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		800000000000000000000001 /* Debug */ = {

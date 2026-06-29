@@ -2,10 +2,12 @@ import AppKit
 import Darwin
 import Foundation
 import IOKit.ps
+import UserNotifications
 
 @MainActor
 final class SystemMonitor: ObservableObject {
     @Published private(set) var stats = SystemStats()
+    @Published private(set) var settings: MonitorSettings
     @Published private(set) var launchAtLoginEnabled = LaunchAtLoginController.isEnabled
     @Published private(set) var settingsError: String?
 
@@ -13,7 +15,13 @@ final class SystemMonitor: ObservableObject {
 
     private var timer: Timer?
     private var sampler = SystemSampler()
+    private let settingsStore = SettingsStore()
+    private let notificationController = NotificationController()
     private var isFocused = false
+
+    init() {
+        settings = settingsStore.load()
+    }
 
     func start() {
         syncLaunchAtLogin()
@@ -54,6 +62,36 @@ final class SystemMonitor: ObservableObject {
         }
     }
 
+    func setMenuBarDisplayMode(_ mode: MenuBarDisplayMode) {
+        settings.menuBarDisplayMode = mode
+        saveSettings()
+        onStatsChanged?(stats)
+    }
+
+    func setNotificationsEnabled(_ enabled: Bool) {
+        if enabled {
+            Task {
+                let granted = await notificationController.requestAuthorization()
+                settings.notificationsEnabled = granted
+                settingsError = granted ? nil : L.t("error.notificationsDenied")
+                saveSettings()
+            }
+        } else {
+            settings.notificationsEnabled = false
+            saveSettings()
+        }
+    }
+
+    func setMemoryPressureThreshold(_ threshold: Double) {
+        settings.memoryPressureThreshold = threshold
+        saveSettings()
+    }
+
+    func setSwapThresholdBytes(_ bytes: UInt64) {
+        settings.swapThresholdBytes = bytes
+        saveSettings()
+    }
+
     private func scheduleTimer() {
         timer?.invalidate()
         let interval: TimeInterval = isFocused ? 1.5 : 4.0
@@ -66,7 +104,12 @@ final class SystemMonitor: ObservableObject {
 
     private func sample() {
         stats = sampler.sample()
+        notificationController.evaluate(stats: stats, settings: settings)
         onStatsChanged?(stats)
+    }
+
+    private func saveSettings() {
+        settingsStore.save(settings)
     }
 }
 

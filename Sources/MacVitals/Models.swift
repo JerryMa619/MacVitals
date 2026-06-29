@@ -10,9 +10,53 @@ struct SystemStats {
     var sampledAt: Date = .now
 
     var menuBarTitle: String {
-        let percent = Int(memory.pressure * 100)
-        return "MV \(percent)%"
+        menuBarTitle(for: .memoryPressure)
     }
+
+    func menuBarTitle(for mode: MenuBarDisplayMode) -> String {
+        switch mode {
+        case .memoryPressure:
+            return "MV \(Int(memory.pressure * 100))%"
+        case .usedMemory:
+            return ByteText.format(memory.usedBytes)
+        case .cpu:
+            return "CPU \(cpu.activePercent.percentText)"
+        case .compact:
+            return "MV"
+        }
+    }
+}
+
+enum MenuBarDisplayMode: String, CaseIterable, Identifiable {
+    case memoryPressure
+    case usedMemory
+    case cpu
+    case compact
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .memoryPressure: L.t("menu.mode.memoryPressure")
+        case .usedMemory: L.t("menu.mode.usedMemory")
+        case .cpu: L.t("menu.mode.cpu")
+        case .compact: L.t("menu.mode.compact")
+        }
+    }
+}
+
+struct MonitorSettings {
+    var menuBarDisplayMode: MenuBarDisplayMode
+    var notificationsEnabled: Bool
+    var memoryPressureThreshold: Double
+    var swapThresholdBytes: UInt64
+
+    static let defaults = MonitorSettings(
+        menuBarDisplayMode: .memoryPressure,
+        notificationsEnabled: false,
+        memoryPressureThreshold: 0.82,
+        swapThresholdBytes: 2 * 1024 * 1024 * 1024
+    )
 }
 
 struct MemoryStats {

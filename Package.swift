@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "MacVitals",
+    defaultLocalization: "en",
     platforms: [
         .macOS(.v14)
     ],
@@ -12,11 +13,15 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "MacVitals",
+            resources: [
+                .process("Resources")
+            ],
             linkerSettings: [
                 .linkedFramework("AppKit"),
                 .linkedFramework("SwiftUI"),
                 .linkedFramework("IOKit"),
-                .linkedFramework("ServiceManagement")
+                .linkedFramework("ServiceManagement"),
+                .linkedFramework("UserNotifications")
             ]
         )
     ]

@@ -25,7 +25,8 @@ final class MacVitalsApp: NSObject, NSApplicationDelegate {
         item.button?.action = #selector(togglePopover)
 
         monitor.onStatsChanged = { [weak self] stats in
-            self?.statusItem?.button?.title = stats.menuBarTitle
+            guard let self else { return }
+            self.statusItem?.button?.title = stats.menuBarTitle(for: self.monitor.settings.menuBarDisplayMode)
         }
         monitor.start()
     }
