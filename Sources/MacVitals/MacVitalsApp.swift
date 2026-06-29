@@ -2,28 +2,60 @@ import AppKit
 import SwiftUI
 
 @main
+struct MacVitalsApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    @StateObject private var monitor = SystemMonitor()
+    @State private var didStart = false
+    @State private var showingSettings = false
+    @State private var showingOnboarding = false
+
+    private let onboardingStore = OnboardingStore()
+
+    var body: some Scene {
+        WindowGroup("MacVitals") {
+            DashboardView {
+                showingSettings = true
+            }
+            .environmentObject(monitor)
+            .frame(minWidth: 380, minHeight: 560)
+            .onAppear {
+                startIfNeeded()
+                NSApp.activate(ignoringOtherApps: true)
+            }
+            .sheet(isPresented: $showingSettings) {
+                SettingsView {
+                    showingOnboarding = true
+                }
+                .environmentObject(monitor)
+            }
+            .sheet(isPresented: $showingOnboarding) {
+                OnboardingView {
+                    onboardingStore.markCompleted()
+                    showingOnboarding = false
+                }
+            }
+        }
+        .windowResizability(.contentSize)
+    }
+
+    private func startIfNeeded() {
+        guard !didStart else { return }
+        didStart = true
+        NSApp.setActivationPolicy(.regular)
+        monitor.start()
+        appDelegate.configure(monitor: monitor)
+    }
+}
+
 @MainActor
-final class MacVitalsApp: NSObject, NSApplicationDelegate {
+final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem?
     private let popover = NSPopover()
-    private let monitor = SystemMonitor()
-    private let onboardingStore = OnboardingStore()
-    private var settingsWindow: NSWindow?
-    private var dashboardWindow: NSWindow?
-    private var onboardingWindow: NSWindow?
+    private weak var monitor: SystemMonitor?
 
-    func applicationDidFinishLaunching(_ notification: Notification) {
-        NSApp.setActivationPolicy(.regular)
-
-        let contentView = DashboardView { [weak self] in
-            self?.showSettingsWindow()
-        }
-            .environmentObject(monitor)
-            .frame(width: 380, height: 560)
-
-        popover.behavior = .transient
-        popover.contentSize = NSSize(width: 380, height: 560)
-        popover.contentViewController = NSHostingController(rootView: contentView)
+    func configure(monitor: SystemMonitor) {
+        guard statusItem == nil else { return }
+        self.monitor = monitor
 
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusItem = item
@@ -33,26 +65,26 @@ final class MacVitalsApp: NSObject, NSApplicationDelegate {
         item.button?.image?.isTemplate = true
         item.button?.imagePosition = .imageLeading
         item.button?.toolTip = "MacVitals"
-        updateStatusItem(with: monitor.stats)
+
+        let contentView = DashboardView(openSettings: {})
+            .environmentObject(monitor)
+            .frame(width: 380, height: 560)
+        popover.behavior = .transient
+        popover.contentSize = NSSize(width: 380, height: 560)
+        popover.contentViewController = NSHostingController(rootView: contentView)
 
         monitor.onStatsChanged = { [weak self] stats in
-            guard let self else { return }
-            self.updateStatusItem(with: stats)
+            self?.updateStatusItem(with: stats)
         }
-        monitor.start()
+        updateStatusItem(with: monitor.stats)
+    }
 
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            self.showDashboardWindow()
-
-            if !self.onboardingStore.hasCompleted {
-                self.showOnboardingWindow()
-            }
-        }
+    func applicationWillTerminate(_ notification: Notification) {
+        monitor?.stop()
     }
 
     @objc private func togglePopover() {
-        guard let button = statusItem?.button else { return }
+        guard let button = statusItem?.button, let monitor else { return }
 
         if popover.isShown {
             monitor.setFocused(false)
@@ -64,91 +96,10 @@ final class MacVitalsApp: NSObject, NSApplicationDelegate {
         }
     }
 
-    func applicationWillTerminate(_ notification: Notification) {
-        monitor.stop()
-    }
-
-    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-        showDashboardWindow()
-        return true
-    }
-
     private func updateStatusItem(with stats: SystemStats) {
+        guard let monitor else { return }
         let title = stats.menuBarTitle(for: monitor.settings.menuBarDisplayMode)
         statusItem?.button?.title = title
         statusItem?.button?.toolTip = "MacVitals - \(title)"
-    }
-
-    private func showDashboardWindow() {
-        if let dashboardWindow {
-            dashboardWindow.makeKeyAndOrderFront(nil)
-            NSApp.activate(ignoringOtherApps: true)
-            return
-        }
-
-        let contentView = DashboardView { [weak self] in
-            self?.showSettingsWindow()
-        }
-            .environmentObject(monitor)
-            .frame(width: 380, height: 560)
-        let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 380, height: 560),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable],
-            backing: .buffered,
-            defer: false
-        )
-        window.contentView = NSHostingView(rootView: contentView)
-        window.title = "MacVitals"
-        window.isReleasedWhenClosed = false
-        window.contentMinSize = NSSize(width: 380, height: 560)
-        window.setContentSize(NSSize(width: 380, height: 560))
-        window.center()
-        dashboardWindow = window
-        window.makeMain()
-        window.makeKeyAndOrderFront(nil)
-        window.orderFrontRegardless()
-        NSApp.activate(ignoringOtherApps: true)
-    }
-
-    private func showSettingsWindow() {
-        if let settingsWindow {
-            settingsWindow.makeKeyAndOrderFront(nil)
-            NSApp.activate(ignoringOtherApps: true)
-            return
-        }
-
-        let controller = NSHostingController(rootView: SettingsView {
-            self.showOnboardingWindow()
-        }.environmentObject(monitor))
-        let window = NSWindow(contentViewController: controller)
-        window.title = L.t("action.settings")
-        window.styleMask = [.titled, .closable, .miniaturizable]
-        window.isReleasedWhenClosed = false
-        window.center()
-        settingsWindow = window
-        window.makeKeyAndOrderFront(nil)
-        NSApp.activate(ignoringOtherApps: true)
-    }
-
-    private func showOnboardingWindow() {
-        if let onboardingWindow {
-            onboardingWindow.makeKeyAndOrderFront(nil)
-            NSApp.activate(ignoringOtherApps: true)
-            return
-        }
-
-        let controller = NSHostingController(rootView: OnboardingView { [weak self] in
-            guard let self else { return }
-            self.onboardingStore.markCompleted()
-            self.onboardingWindow?.close()
-        })
-        let window = NSWindow(contentViewController: controller)
-        window.title = L.t("onboarding.windowTitle")
-        window.styleMask = [.titled, .closable]
-        window.isReleasedWhenClosed = false
-        window.center()
-        onboardingWindow = window
-        window.makeKeyAndOrderFront(nil)
-        NSApp.activate(ignoringOtherApps: true)
     }
 }
