@@ -1,5 +1,7 @@
 "action.activityMonitor" = "活动监视器";
+"action.close" = "关闭";
 "action.copySnapshot" = "复制";
+"action.quit" = "退出 MacVitals";
 "action.refresh" = "刷新";
 "action.settings" = "设置";
 "battery.charging" = "充电中";

@@ -1,132 +1,158 @@
+import AppKit
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var monitor: SystemMonitor
     let showPrivacyGuide: () -> Void
 
     var body: some View {
-        VStack(spacing: 0) {
-            header
-            Divider()
-            Form {
-                Section {
-                    Picker(L.t("settings.menuBar"), selection: Binding(
-                        get: { monitor.settings.menuBarDisplayMode },
-                        set: { newValue in
-                            monitor.setMenuBarDisplayMode(newValue)
-                        }
-                    )) {
-                        ForEach(MenuBarDisplayMode.allCases) { mode in
-                            Text(mode.title).tag(mode)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                } header: {
-                    Text(L.t("settings.general"))
-                }
+        ZStack {
+            VitalsBackdrop()
 
-                Section {
-                    Picker(L.t("settings.samplingMode"), selection: Binding(
-                        get: { monitor.settings.samplingMode },
-                        set: { newValue in
-                            monitor.setSamplingMode(newValue)
-                        }
-                    )) {
-                        ForEach(SamplingMode.allCases) { mode in
-                            Text(mode.title).tag(mode)
-                        }
-                    }
-                    .pickerStyle(.segmented)
+            VStack(spacing: 0) {
+                header
+                Divider()
+                    .overlay(VitalsTheme.line)
 
-                    Text(monitor.settings.samplingMode.detail)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                } header: {
-                    Text(L.t("settings.performance"))
-                }
-
-                Section {
-                    Toggle(isOn: Binding(
-                        get: { monitor.settings.notificationsEnabled },
-                        set: { enabled in
-                            monitor.setNotificationsEnabled(enabled)
-                        }
-                    )) {
-                        Label(L.t("settings.notifications"), systemImage: "bell")
-                    }
-                    .toggleStyle(.switch)
-
-                    ThresholdRow(
-                        title: L.t("settings.memoryThreshold"),
-                        value: monitor.settings.memoryPressureThreshold,
-                        range: 0.65...0.95,
-                        display: monitor.settings.memoryPressureThreshold.percentText
-                    ) { threshold in
-                        monitor.setMemoryPressureThreshold(threshold)
-                    }
-                    .disabled(!monitor.settings.notificationsEnabled)
-
-                    SwapThresholdRow(value: monitor.settings.swapThresholdBytes) { bytes in
-                        monitor.setSwapThresholdBytes(bytes)
-                    }
-                    .disabled(!monitor.settings.notificationsEnabled)
-                } header: {
-                    Text(L.t("settings.alerts"))
-                } footer: {
-                    Text(L.t("settings.alertsFooter"))
-                }
-
-                Section {
-                    Toggle(isOn: Binding(
-                        get: { monitor.launchAtLoginEnabled },
-                        set: { enabled in
-                            monitor.setLaunchAtLoginEnabled(enabled)
-                        }
-                    )) {
-                        Label(L.t("settings.launchAtLogin"), systemImage: "power")
-                    }
-                    .toggleStyle(.switch)
-                } header: {
-                    Text(L.t("settings.startup"))
-                }
-
-                Section {
-                    Button {
-                        showPrivacyGuide()
-                    } label: {
-                        Label(L.t("settings.privacyGuide"), systemImage: "lock.shield")
-                    }
-                } header: {
-                    Text(L.t("settings.privacy"))
-                } footer: {
-                    Text(L.t("settings.privacyFooter"))
-                }
-
-                if let settingsError = monitor.settingsError {
+                Form {
                     Section {
-                        Text(settingsError)
+                        Picker(L.t("settings.menuBar"), selection: Binding(
+                            get: { monitor.settings.menuBarDisplayMode },
+                            set: { newValue in
+                                monitor.setMenuBarDisplayMode(newValue)
+                            }
+                        )) {
+                            ForEach(MenuBarDisplayMode.allCases) { mode in
+                                Text(mode.title).tag(mode)
+                            }
+                        }
+                        .pickerStyle(.menu)
+                    } header: {
+                        Text(L.t("settings.general"))
+                    }
+
+                    Section {
+                        Picker(L.t("settings.samplingMode"), selection: Binding(
+                            get: { monitor.settings.samplingMode },
+                            set: { newValue in
+                                monitor.setSamplingMode(newValue)
+                            }
+                        )) {
+                            ForEach(SamplingMode.allCases) { mode in
+                                Text(mode.title).tag(mode)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+
+                        Text(monitor.settings.samplingMode.detail)
                             .font(.caption)
-                            .foregroundStyle(.red)
+                            .foregroundStyle(.secondary)
+                    } header: {
+                        Text(L.t("settings.performance"))
+                    }
+
+                    Section {
+                        Toggle(isOn: Binding(
+                            get: { monitor.settings.notificationsEnabled },
+                            set: { enabled in
+                                monitor.setNotificationsEnabled(enabled)
+                            }
+                        )) {
+                            Label(L.t("settings.notifications"), systemImage: "bell")
+                        }
+                        .toggleStyle(.switch)
+
+                        ThresholdRow(
+                            title: L.t("settings.memoryThreshold"),
+                            value: monitor.settings.memoryPressureThreshold,
+                            range: 0.65...0.95,
+                            display: monitor.settings.memoryPressureThreshold.percentText
+                        ) { threshold in
+                            monitor.setMemoryPressureThreshold(threshold)
+                        }
+                        .disabled(!monitor.settings.notificationsEnabled)
+
+                        SwapThresholdRow(value: monitor.settings.swapThresholdBytes) { bytes in
+                            monitor.setSwapThresholdBytes(bytes)
+                        }
+                        .disabled(!monitor.settings.notificationsEnabled)
+                    } header: {
+                        Text(L.t("settings.alerts"))
+                    } footer: {
+                        Text(L.t("settings.alertsFooter"))
+                    }
+
+                    Section {
+                        Toggle(isOn: Binding(
+                            get: { monitor.launchAtLoginEnabled },
+                            set: { enabled in
+                                monitor.setLaunchAtLoginEnabled(enabled)
+                            }
+                        )) {
+                            Label(L.t("settings.launchAtLogin"), systemImage: "power")
+                        }
+                        .toggleStyle(.switch)
+                    } header: {
+                        Text(L.t("settings.startup"))
+                    }
+
+                    Section {
+                        Button {
+                            showPrivacyGuide()
+                        } label: {
+                            Label(L.t("settings.privacyGuide"), systemImage: "lock.shield")
+                        }
+                        .buttonStyle(VitalsButtonStyle())
+                    } header: {
+                        Text(L.t("settings.privacy"))
+                    } footer: {
+                        Text(L.t("settings.privacyFooter"))
+                    }
+
+                    Section {
+                        Button(role: .destructive) {
+                            NSApp.terminate(nil)
+                        } label: {
+                            Label(L.t("action.quit"), systemImage: "power")
+                        }
+                        .buttonStyle(VitalsButtonStyle(role: .destructive))
+                    }
+
+                    if let settingsError = monitor.settingsError {
+                        Section {
+                            Text(settingsError)
+                                .font(.caption)
+                                .foregroundStyle(.red)
+                        }
                     }
                 }
+                .formStyle(.grouped)
+                .scrollContentBackground(.hidden)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
             }
-            .formStyle(.grouped)
-            .scrollContentBackground(.hidden)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 10)
         }
         .frame(width: 420, height: 560)
-        .background(Color(nsColor: .windowBackgroundColor))
+        .preferredColorScheme(.dark)
     }
 
     private var header: some View {
         HStack(spacing: 10) {
             Image(systemName: "gearshape")
                 .font(.system(size: 18, weight: .medium))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(VitalsTheme.accent)
             Text(L.t("action.settings"))
                 .font(.system(size: 18, weight: .semibold))
             Spacer()
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 12, weight: .bold))
+            }
+            .buttonStyle(VitalsIconButtonStyle())
+            .help(L.t("action.close"))
         }
         .padding(16)
     }

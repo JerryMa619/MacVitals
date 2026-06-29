@@ -5,39 +5,45 @@ struct DashboardView: View {
     let openSettings: () -> Void
 
     var body: some View {
-        VStack(spacing: 0) {
-            header
-            Divider()
-            ScrollView {
-                VStack(spacing: 14) {
-                    OverviewSection(stats: monitor.stats)
-                    TrendSection(history: monitor.history)
-                    RecommendationSection(recommendations: monitor.stats.recommendations)
-                    MemorySection(memory: monitor.stats.memory)
-                    HardwareSection(stats: monitor.stats)
-                    DiagnosticsSection(snapshotStatus: monitor.snapshotStatus) {
-                        monitor.copyDiagnosticSnapshot()
+        ZStack {
+            VitalsBackdrop()
+
+            VStack(spacing: 0) {
+                header
+                Divider()
+                    .overlay(VitalsTheme.line)
+                ScrollView {
+                    VStack(spacing: 14) {
+                        OverviewSection(stats: monitor.stats)
+                        TrendSection(history: monitor.history)
+                        RecommendationSection(recommendations: monitor.stats.recommendations)
+                        MemorySection(memory: monitor.stats.memory)
+                        HardwareSection(stats: monitor.stats)
+                        DiagnosticsSection(snapshotStatus: monitor.snapshotStatus) {
+                            monitor.copyDiagnosticSnapshot()
+                        }
+                        ProcessSection(processes: monitor.stats.processes) {
+                            monitor.openActivityMonitor()
+                        }
                     }
-                    ProcessSection(processes: monitor.stats.processes) {
-                        monitor.openActivityMonitor()
-                    }
+                    .padding(16)
                 }
-                .padding(16)
+                Divider()
+                    .overlay(VitalsTheme.line)
+                footer
             }
-            Divider()
-            footer
         }
-        .background(Color(nsColor: .windowBackgroundColor))
+        .preferredColorScheme(.dark)
     }
 
     private var header: some View {
         HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 2) {
                 Text("MacVitals")
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(.system(size: 20, weight: .bold))
                 Text(monitor.stats.sampledAt, style: .time)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.white.opacity(0.58))
             }
             Spacer()
             StatusPill(pressure: monitor.stats.memory.pressure)
@@ -52,6 +58,7 @@ struct DashboardView: View {
             } label: {
                 Label(L.t("action.refresh"), systemImage: "arrow.clockwise")
             }
+            .buttonStyle(VitalsButtonStyle())
 
             Spacer()
 
@@ -60,14 +67,15 @@ struct DashboardView: View {
             } label: {
                 Label(L.t("action.settings"), systemImage: "gearshape")
             }
+            .buttonStyle(VitalsButtonStyle())
 
             Button {
                 monitor.openActivityMonitor()
             } label: {
                 Label(L.t("action.activityMonitor"), systemImage: "waveform.path.ecg")
             }
+            .buttonStyle(VitalsButtonStyle())
         }
-        .buttonStyle(.borderless)
         .padding(12)
     }
 }
@@ -138,7 +146,7 @@ private struct DiagnosticsSection: View {
             Button(action: copySnapshot) {
                 Label(L.t("action.copySnapshot"), systemImage: "doc.on.doc")
             }
-            .buttonStyle(.borderless)
+            .buttonStyle(VitalsButtonStyle())
         }
         .panelStyle()
     }
@@ -231,7 +239,11 @@ private struct Sparkline: View {
 
             ZStack {
                 RoundedRectangle(cornerRadius: 6, style: .continuous)
-                    .fill(Color(nsColor: .windowBackgroundColor))
+                    .fill(Color.black.opacity(0.28))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6, style: .continuous)
+                            .stroke(VitalsTheme.mutedLine, lineWidth: 1)
+                    )
 
                 if points.count > 1 {
                     Path { path in
@@ -240,7 +252,8 @@ private struct Sparkline: View {
                             path.addLine(to: point)
                         }
                     }
-                    .stroke(tint, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                    .stroke(tint.opacity(0.95), style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                    .shadow(color: tint.opacity(0.42), radius: 5)
                 } else {
                     Capsule()
                         .fill(tint.opacity(0.35))
@@ -388,11 +401,16 @@ private struct MetricRing: View {
             Text(detail)
                 .font(.caption2)
                 .lineLimit(1)
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(.white.opacity(0.38))
         }
         .frame(maxWidth: .infinity)
         .padding(10)
-        .background(Color(nsColor: .controlBackgroundColor))
+        .background(VitalsTheme.panel)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .stroke(tint.opacity(0.34), lineWidth: 1)
+        )
+        .shadow(color: tint.opacity(0.16), radius: 10, y: 4)
         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
     }
 
@@ -418,7 +436,8 @@ private struct StatusPill: View {
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 5)
-        .background(Color(nsColor: .controlBackgroundColor))
+        .background(VitalsTheme.panelStrong)
+        .overlay(Capsule().stroke(color.opacity(0.42), lineWidth: 1))
         .clipShape(Capsule())
     }
 
@@ -449,6 +468,7 @@ private struct SectionTitle: View {
     var body: some View {
         Text(text)
             .font(.system(size: 13, weight: .semibold))
+            .foregroundStyle(.white.opacity(0.92))
     }
 }
 
@@ -478,7 +498,12 @@ private extension View {
         self
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color(nsColor: .controlBackgroundColor))
+            .background(VitalsTheme.panel)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .stroke(VitalsTheme.line, lineWidth: 1)
+            )
+            .shadow(color: VitalsTheme.glow.opacity(0.12), radius: 12, y: 5)
             .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
     }
 }

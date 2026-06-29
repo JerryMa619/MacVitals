@@ -1,5 +1,7 @@
 "action.activityMonitor" = "Activity Monitor";
+"action.close" = "Close";
 "action.copySnapshot" = "Copy";
+"action.quit" = "Quit MacVitals";
 "action.refresh" = "Refresh";
 "action.settings" = "Settings";
 "battery.charging" = "charging";
