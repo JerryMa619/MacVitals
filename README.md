@@ -4,6 +4,8 @@ MacVitals is a lightweight native macOS menu bar monitor for memory, CPU, disk, 
 
 Website: [MacVitals GitHub Pages](https://jerryma619.github.io/MacVitals/)
 
+Early access: [Join the TestFlight list](https://github.com/JerryMa619/MacVitals/issues/new?title=MacVitals%20Early%20Access%20Request&body=Hi%2C%20I%20would%20like%20to%20join%20the%20MacVitals%20early%20access%20%2F%20TestFlight%20list.)
+
 ## Current Scope
 
 - Native Swift + SwiftUI + AppKit menu bar app.
@@ -25,6 +27,7 @@ Website: [MacVitals GitHub Pages](https://jerryma619.github.io/MacVitals/)
 - Conservative "optimize" action that surfaces heavy apps and opens Activity Monitor instead of force-killing processes.
 
 See [CHANGELOG.md](CHANGELOG.md) for the development history.
+See [ANALYTICS.md](ANALYTICS.md) for the privacy-first analytics plan.
 
 ## Run
 

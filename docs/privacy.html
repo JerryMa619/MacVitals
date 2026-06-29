@@ -7,6 +7,8 @@
   <title>Privacy Policy - MacVitals</title>
   <link rel="icon" href="assets/icon.png">
   <link rel="stylesheet" href="styles.css">
+  <script defer data-domain="jerryma619.github.io" src="https://plausible.io/js/script.js"></script>
+  <script defer src="analytics.js"></script>
 </head>
 <body>
   <header class="site-header">
@@ -17,8 +19,8 @@
     <nav aria-label="Primary navigation">
       <a href="./#features">Features</a>
       <a href="privacy.html">Privacy</a>
-      <a href="support.html">Support</a>
-      <a href="https://github.com/JerryMa619/MacVitals">GitHub</a>
+      <a href="support.html" data-analytics-event="Support">Support</a>
+      <a href="https://github.com/JerryMa619/MacVitals" data-analytics-event="View on GitHub">GitHub</a>
     </nav>
   </header>
 
@@ -26,7 +28,7 @@
     <p class="eyebrow">Privacy Policy</p>
     <h1>MacVitals keeps monitoring local.</h1>
     <p>Last updated: June 29, 2026</p>
-    <p>MacVitals is designed as a local macOS system monitor. The current MVP does not include accounts, analytics, advertising SDKs, tracking SDKs, or diagnostic upload.</p>
+    <p>MacVitals is designed as a local macOS system monitor. The current app MVP does not include accounts, in-app analytics, advertising SDKs, tracking SDKs, or diagnostic upload.</p>
 
     <section>
       <h2>Data MacVitals Reads</h2>
@@ -36,6 +38,11 @@
     <section>
       <h2>Data Collection</h2>
       <p>MacVitals does not collect personal data on a server. Monitoring data stays on your Mac. Diagnostic snapshots are copied to your clipboard only when you explicitly choose that action.</p>
+    </section>
+
+    <section>
+      <h2>Website Analytics</h2>
+      <p>The MacVitals website uses Plausible Analytics to understand aggregate website traffic and button clicks, such as GitHub, Early Access, Privacy, and Support clicks. Plausible does not use cookies and is used only for website analytics, not in-app monitoring data.</p>
     </section>
 
     <section>
@@ -50,16 +57,16 @@
 
     <section>
       <h2>Contact</h2>
-      <p>For privacy questions, open an issue at <a href="https://github.com/JerryMa619/MacVitals/issues">github.com/JerryMa619/MacVitals/issues</a>.</p>
+      <p>For privacy questions, open an issue at <a href="https://github.com/JerryMa619/MacVitals/issues" data-analytics-event="Support">github.com/JerryMa619/MacVitals/issues</a>.</p>
     </section>
   </main>
 
   <footer class="site-footer">
     <span>© 2026 MacVitals</span>
     <div>
-      <a href="privacy.html">Privacy</a>
-      <a href="support.html">Support</a>
-      <a href="https://github.com/JerryMa619/MacVitals">GitHub</a>
+      <a href="privacy.html" data-analytics-event="Privacy Policy">Privacy</a>
+      <a href="support.html" data-analytics-event="Support">Support</a>
+      <a href="https://github.com/JerryMa619/MacVitals" data-analytics-event="View on GitHub">GitHub</a>
     </div>
   </footer>
 </body>

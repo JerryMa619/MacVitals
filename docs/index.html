@@ -8,6 +8,8 @@
   <link rel="icon" href="assets/icon.png">
   <link rel="apple-touch-icon" href="assets/icon.png">
   <link rel="stylesheet" href="styles.css">
+  <script defer data-domain="jerryma619.github.io" src="https://plausible.io/js/script.js"></script>
+  <script defer src="analytics.js"></script>
 </head>
 <body>
   <header class="site-header">
@@ -18,8 +20,8 @@
     <nav aria-label="Primary navigation">
       <a href="#features">Features</a>
       <a href="#privacy">Privacy</a>
-      <a href="support.html">Support</a>
-      <a href="https://github.com/JerryMa619/MacVitals">GitHub</a>
+      <a href="support.html" data-analytics-event="Support">Support</a>
+      <a href="https://github.com/JerryMa619/MacVitals" data-analytics-event="View on GitHub">GitHub</a>
     </nav>
   </header>
 
@@ -30,13 +32,13 @@
         <h1>MacVitals</h1>
         <p class="lead">A lightweight Mac health monitor that explains why your Mac feels slow, before you start closing things at random.</p>
         <div class="hero-actions">
-          <a class="button primary" href="https://github.com/JerryMa619/MacVitals">View on GitHub</a>
-          <a class="button secondary" href="#features">Explore features</a>
+          <a class="button primary" href="https://github.com/JerryMa619/MacVitals/issues/new?title=MacVitals%20Early%20Access%20Request&body=Hi%2C%20I%20would%20like%20to%20join%20the%20MacVitals%20early%20access%20%2F%20TestFlight%20list." data-analytics-event="Join TestFlight">Get Early Access</a>
+          <a class="button secondary" href="https://github.com/JerryMa619/MacVitals" data-analytics-event="View on GitHub">View on GitHub</a>
         </div>
         <dl class="hero-facts">
           <div>
             <dt>Private</dt>
-            <dd>No analytics or upload</dd>
+            <dd>No in-app analytics or upload</dd>
           </div>
           <div>
             <dt>Lightweight</dt>
@@ -146,11 +148,11 @@
       </div>
       <ul>
         <li>No account required.</li>
-        <li>No analytics or tracking in the MVP.</li>
+        <li>No in-app analytics or tracking in the MVP.</li>
         <li>No diagnostic upload.</li>
         <li>No automatic process killing or file deletion.</li>
       </ul>
-      <a class="button secondary" href="privacy.html">Read privacy policy</a>
+      <a class="button secondary" href="privacy.html" data-analytics-event="Privacy Policy">Read privacy policy</a>
     </section>
 
     <section class="section split">
@@ -173,14 +175,23 @@
         </div>
       </div>
     </section>
+
+    <section class="early-access">
+      <div>
+        <p class="eyebrow">Early access</p>
+        <h2>Help shape the first TestFlight build.</h2>
+        <p>MacVitals is preparing for TestFlight. Join the early access list if you want to test the app on your MacBook and send feedback before the App Store release.</p>
+      </div>
+      <a class="button primary" href="https://github.com/JerryMa619/MacVitals/issues/new?title=MacVitals%20Early%20Access%20Request&body=Hi%2C%20I%20would%20like%20to%20join%20the%20MacVitals%20early%20access%20%2F%20TestFlight%20list." data-analytics-event="Join TestFlight">Join TestFlight list</a>
+    </section>
   </main>
 
   <footer class="site-footer">
     <span>© 2026 MacVitals</span>
     <div>
-      <a href="privacy.html">Privacy</a>
-      <a href="support.html">Support</a>
-      <a href="https://github.com/JerryMa619/MacVitals">GitHub</a>
+      <a href="privacy.html" data-analytics-event="Privacy Policy">Privacy</a>
+      <a href="support.html" data-analytics-event="Support">Support</a>
+      <a href="https://github.com/JerryMa619/MacVitals" data-analytics-event="View on GitHub">GitHub</a>
     </div>
   </footer>
 </body>

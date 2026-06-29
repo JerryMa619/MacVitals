@@ -21,6 +21,8 @@ All notable MacVitals changes are summarized here.
 - Language picker with System, English, Simplified Chinese, French, Russian, and German options.
 - Lightweight health diagnostics derived from existing stats and the short in-memory history window.
 - Static product website, privacy policy, and support pages under `docs/` for GitHub Pages and App Store metadata.
+- Plausible website analytics and aggregate click tracking for GitHub, Early Access/TestFlight, Privacy Policy, and Support links.
+- Early Access/TestFlight call-to-action on the website and README.
 
 ### Changed
 
