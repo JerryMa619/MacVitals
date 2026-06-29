@@ -14,7 +14,20 @@ The monitor samples every 4 seconds in the background and every 1.5 seconds whil
 
 ## Verification Performed
 
-This repository was syntax/API checked with:
+This repository builds with full Xcode selected:
+
+```sh
+env HOME=/Users/zhenyaoma/Documents/Codex/2026-06-29/ni-h/work/swift-home \
+  CLANG_MODULE_CACHE_PATH=/Users/zhenyaoma/Documents/Codex/2026-06-29/ni-h/work/swift-home/.cache/clang/ModuleCache \
+  SWIFTPM_CACHE_PATH=/Users/zhenyaoma/Documents/Codex/2026-06-29/ni-h/work/swiftpm-cache \
+  SWIFTPM_CONFIG_PATH=/Users/zhenyaoma/Documents/Codex/2026-06-29/ni-h/work/swiftpm-config \
+  SWIFTPM_SECURITY_PATH=/Users/zhenyaoma/Documents/Codex/2026-06-29/ni-h/work/swiftpm-security \
+  swift build
+```
+
+The environment variables above are only needed in restricted Codex sessions where the default SwiftPM cache directories are not writable.
+
+Earlier syntax/API checking was performed with:
 
 ```sh
 env CLANG_MODULE_CACHE_PATH=/Users/zhenyaoma/Documents/Codex/2026-06-29/ni-h/work/clang-module-cache \
@@ -22,5 +35,3 @@ env CLANG_MODULE_CACHE_PATH=/Users/zhenyaoma/Documents/Codex/2026-06-29/ni-h/wor
   -framework AppKit -framework SwiftUI -framework IOKit \
   Sources/MacVitals/*.swift -o /tmp/MacVitalsCheck
 ```
-
-`swift build` and `xcodebuild` could not be used on this machine because the active developer directory is Command Line Tools rather than full Xcode, and the local SwiftPM installation is missing `BuildServerProtocol.framework`.
