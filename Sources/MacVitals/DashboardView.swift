@@ -13,7 +13,7 @@ struct DashboardView: View {
                 Divider()
                     .overlay(VitalsTheme.line)
                 ScrollView {
-                    VStack(spacing: 14) {
+                    VStack(spacing: 16) {
                         OverviewSection(stats: monitor.stats)
                         TrendSection(history: monitor.history)
                         RecommendationSection(recommendations: monitor.stats.recommendations)
@@ -26,7 +26,7 @@ struct DashboardView: View {
                             monitor.openActivityMonitor()
                         }
                     }
-                    .padding(16)
+                    .padding(18)
                 }
                 Divider()
                     .overlay(VitalsTheme.line)
@@ -46,14 +46,14 @@ struct DashboardView: View {
         HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 2) {
                 Text("MacVitals")
-                    .font(.system(size: 20, weight: .bold))
+                    .font(.system(size: 22, weight: .bold))
                 Text(monitor.stats.sampledAt, style: .time)
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.58))
             }
             Spacer()
-            StatusPill(pressure: monitor.stats.memory.pressure)
-        }
+                StatusPill(pressure: monitor.stats.memory.pressure)
+            }
         .padding(16)
     }
 
@@ -171,7 +171,7 @@ private struct TrendSection: View {
                     .foregroundStyle(.tertiary)
             }
 
-            VStack(spacing: 10) {
+            VStack(spacing: 12) {
                 TrendChart(
                     title: L.t("metric.memory"),
                     value: history.last?.memoryPressure ?? 0,
@@ -195,7 +195,7 @@ private struct TrendSection: View {
                 )
             }
         }
-        .panelStyle()
+        .panelStyle(padding: 14)
     }
 
     private var normalizedSwapHistory: [Double] {
@@ -216,19 +216,19 @@ private struct TrendChart: View {
     let valueText: String
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text(title)
-                    .font(.system(size: 12, weight: .medium))
+                    .font(.system(size: 13, weight: .semibold))
                 Spacer()
                 Text(valueText)
-                    .font(.system(size: 12))
-                    .foregroundStyle(.secondary)
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(tint.opacity(0.95))
                     .monospacedDigit()
             }
 
             Sparkline(values: values, tint: tint)
-                .frame(height: 38)
+                .frame(height: 78)
                 .accessibilityLabel(title)
                 .accessibilityValue(valueText)
         }
@@ -241,6 +241,7 @@ private struct Sparkline: View {
 
     var body: some View {
         GeometryReader { proxy in
+            let size = proxy.size
             let points = chartPoints(size: proxy.size)
 
             ZStack {
@@ -250,16 +251,35 @@ private struct Sparkline: View {
                         RoundedRectangle(cornerRadius: 6, style: .continuous)
                             .stroke(VitalsTheme.mutedLine, lineWidth: 1)
                     )
+                ChartGrid()
+                    .stroke(tint.opacity(0.12), lineWidth: 0.7)
+                    .padding(6)
 
                 if points.count > 1 {
+                    Path { path in
+                        path.move(to: CGPoint(x: points[0].x, y: size.height))
+                        for point in points {
+                            path.addLine(to: point)
+                        }
+                        path.addLine(to: CGPoint(x: points[points.count - 1].x, y: size.height))
+                        path.closeSubpath()
+                    }
+                    .fill(
+                        LinearGradient(
+                            colors: [tint.opacity(0.28), tint.opacity(0.03)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+
                     Path { path in
                         path.move(to: points[0])
                         for point in points.dropFirst() {
                             path.addLine(to: point)
                         }
                     }
-                    .stroke(tint.opacity(0.95), style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
-                    .shadow(color: tint.opacity(0.42), radius: 5)
+                    .stroke(tint.opacity(0.98), style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
+                    .shadow(color: tint.opacity(0.65), radius: 8)
                 } else {
                     Capsule()
                         .fill(tint.opacity(0.35))
@@ -283,11 +303,33 @@ private struct Sparkline: View {
     }
 }
 
+private struct ChartGrid: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let verticalDivisions = 6
+        let horizontalDivisions = 3
+
+        for index in 1..<verticalDivisions {
+            let x = rect.minX + rect.width * CGFloat(index) / CGFloat(verticalDivisions)
+            path.move(to: CGPoint(x: x, y: rect.minY))
+            path.addLine(to: CGPoint(x: x, y: rect.maxY))
+        }
+
+        for index in 1...horizontalDivisions {
+            let y = rect.minY + rect.height * CGFloat(index) / CGFloat(horizontalDivisions + 1)
+            path.move(to: CGPoint(x: rect.minX, y: y))
+            path.addLine(to: CGPoint(x: rect.maxX, y: y))
+        }
+
+        return path
+    }
+}
+
 private struct OverviewSection: View {
     let stats: SystemStats
 
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 14) {
             MetricRing(title: L.t("metric.memory"), value: stats.memory.pressure, detail: ByteText.format(stats.memory.usedBytes))
             MetricRing(title: "CPU", value: stats.cpu.activePercent, detail: stats.cpu.activePercent.percentText)
             MetricRing(title: L.t("metric.disk"), value: stats.disk.usedPercent, detail: ByteText.format(stats.disk.freeBytes))
@@ -392,31 +434,53 @@ private struct MetricRing: View {
     let detail: String
 
     var body: some View {
-        VStack(spacing: 6) {
-            Gauge(value: value) {
-                EmptyView()
-            } currentValueLabel: {
-                Text(value.percentText)
-                    .font(.system(size: 12, weight: .semibold))
+        VStack(spacing: 10) {
+            ZStack {
+                Circle()
+                    .stroke(VitalsTheme.mutedLine, lineWidth: 9)
+
+                Circle()
+                    .trim(from: 0, to: min(1, max(0, value)))
+                    .stroke(
+                        AngularGradient(
+                            colors: [tint.opacity(0.25), tint, .white.opacity(0.9), tint],
+                            center: .center
+                        ),
+                        style: StrokeStyle(lineWidth: 9, lineCap: .round)
+                    )
+                    .rotationEffect(.degrees(-90))
+                    .shadow(color: tint.opacity(0.7), radius: 9)
+
+                Circle()
+                    .stroke(tint.opacity(0.16), lineWidth: 1)
+                    .padding(12)
+
+                VStack(spacing: 1) {
+                    Text(value.percentText)
+                        .font(.system(size: 19, weight: .bold))
+                        .monospacedDigit()
+                    Text(title.uppercased())
+                        .font(.system(size: 9, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.48))
+                }
             }
-            .gaugeStyle(.accessoryCircularCapacity)
-            .tint(tint)
-            Text(title)
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            .frame(width: 92, height: 92)
+
             Text(detail)
-                .font(.caption2)
+                .font(.system(size: 11, weight: .medium))
                 .lineLimit(1)
-                .foregroundStyle(.white.opacity(0.38))
+                .minimumScaleFactor(0.75)
+                .foregroundStyle(.white.opacity(0.5))
         }
         .frame(maxWidth: .infinity)
-        .padding(10)
+        .padding(.vertical, 14)
+        .padding(.horizontal, 8)
         .background(VitalsTheme.panel)
         .overlay(
             RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .stroke(tint.opacity(0.34), lineWidth: 1)
         )
-        .shadow(color: tint.opacity(0.16), radius: 10, y: 4)
+        .shadow(color: tint.opacity(0.24), radius: 14, y: 5)
         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
     }
 
@@ -500,9 +564,9 @@ private struct StatRow: View {
 }
 
 private extension View {
-    func panelStyle() -> some View {
+    func panelStyle(padding: CGFloat = 12) -> some View {
         self
-            .padding(12)
+            .padding(padding)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(VitalsTheme.panel)
             .overlay(

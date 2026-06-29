@@ -17,7 +17,7 @@ struct MacVitalsApp: App {
                 showingSettings = true
             }
             .environmentObject(monitor)
-            .frame(minWidth: 380, minHeight: 560)
+            .frame(minWidth: 460, minHeight: 680)
             .onAppear {
                 startIfNeeded()
                 NSApp.activate(ignoringOtherApps: true)
@@ -68,9 +68,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         let contentView = DashboardView(openSettings: {})
             .environmentObject(monitor)
-            .frame(width: 380, height: 560)
+            .frame(width: 460, height: 680)
         popover.behavior = .transient
-        popover.contentSize = NSSize(width: 380, height: 560)
+        popover.contentSize = NSSize(width: 460, height: 680)
         popover.contentViewController = NSHostingController(rootView: contentView)
 
         monitor.onStatsChanged = { [weak self] stats in
