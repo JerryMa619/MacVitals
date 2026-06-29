@@ -16,11 +16,11 @@ struct SystemStats {
     func menuBarTitle(for mode: MenuBarDisplayMode) -> String {
         switch mode {
         case .memoryPressure:
-            return "MV \(Int(memory.pressure * 100))%"
+            return "MacVitals \(Int(memory.pressure * 100))%"
         case .usedMemory:
-            return ByteText.format(memory.usedBytes)
+            return "MacVitals \(ByteText.format(memory.usedBytes))"
         case .cpu:
-            return "CPU \(cpu.activePercent.percentText)"
+            return "MacVitals CPU \(cpu.activePercent.percentText)"
         case .compact:
             return "MV"
         }
