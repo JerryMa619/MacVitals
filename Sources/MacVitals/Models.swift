@@ -53,14 +53,51 @@ enum MenuBarDisplayMode: String, CaseIterable, Identifiable {
     }
 }
 
+enum SamplingMode: String, CaseIterable, Identifiable {
+    case balanced
+    case lowPower
+    case responsive
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .balanced: L.t("sampling.mode.balanced")
+        case .lowPower: L.t("sampling.mode.lowPower")
+        case .responsive: L.t("sampling.mode.responsive")
+        }
+    }
+
+    var detail: String {
+        switch self {
+        case .balanced: L.t("sampling.mode.balanced.detail")
+        case .lowPower: L.t("sampling.mode.lowPower.detail")
+        case .responsive: L.t("sampling.mode.responsive.detail")
+        }
+    }
+
+    func interval(isFocused: Bool) -> TimeInterval {
+        switch (self, isFocused) {
+        case (.balanced, true): 1.5
+        case (.balanced, false): 4.0
+        case (.lowPower, true): 3.0
+        case (.lowPower, false): 10.0
+        case (.responsive, true): 1.0
+        case (.responsive, false): 2.5
+        }
+    }
+}
+
 struct MonitorSettings {
     var menuBarDisplayMode: MenuBarDisplayMode
+    var samplingMode: SamplingMode
     var notificationsEnabled: Bool
     var memoryPressureThreshold: Double
     var swapThresholdBytes: UInt64
 
     static let defaults = MonitorSettings(
         menuBarDisplayMode: .memoryPressure,
+        samplingMode: .balanced,
         notificationsEnabled: false,
         memoryPressureThreshold: 0.82,
         swapThresholdBytes: 2 * 1024 * 1024 * 1024

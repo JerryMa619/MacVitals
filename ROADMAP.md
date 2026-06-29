@@ -22,7 +22,7 @@
 
 - Per-app recommendations when memory pressure and swap both rise.
 - Short historical charts for memory, CPU, and swap.
-- Low-power sampling mode.
+- Low-power, balanced, and live sampling modes.
 - Export diagnostic snapshot as plain text.
 
 ## 1.0 App Store Candidate

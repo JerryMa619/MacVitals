@@ -26,6 +26,12 @@
 "notification.swap.body" = "Swap 使用量已达到 %@。建议查看高占用应用。";
 "notification.swap.title" = "Swap 使用量偏高";
 "process.empty" = "暂无可用的运行应用数据。";
+"sampling.mode.balanced" = "均衡";
+"sampling.mode.balanced.detail" = "适合日常常驻使用的自适应采样。";
+"sampling.mode.lowPower" = "低功耗";
+"sampling.mode.lowPower.detail" = "后台降低采样频率，减少资源开销。";
+"sampling.mode.responsive" = "实时";
+"sampling.mode.responsive.detail" = "MacVitals 可见时更频繁刷新。";
 "section.hardware" = "硬件";
 "section.heavyApps" = "高占用应用";
 "section.diagnostics" = "诊断";
@@ -39,6 +45,8 @@
 "settings.memoryThreshold" = "内存提醒";
 "settings.menuBar" = "菜单栏";
 "settings.notifications" = "通知提醒";
+"settings.performance" = "性能";
+"settings.samplingMode" = "采样";
 "settings.startup" = "启动";
 "settings.swapThreshold" = "Swap 提醒";
 "status.busy" = "繁忙";

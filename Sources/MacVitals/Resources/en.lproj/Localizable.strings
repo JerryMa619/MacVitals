@@ -26,6 +26,12 @@
 "notification.swap.body" = "Swap usage reached %@. Check heavy apps when convenient.";
 "notification.swap.title" = "Swap usage is high";
 "process.empty" = "No running app data available.";
+"sampling.mode.balanced" = "Balanced";
+"sampling.mode.balanced.detail" = "Adaptive sampling for everyday use.";
+"sampling.mode.lowPower" = "Low Power";
+"sampling.mode.lowPower.detail" = "Samples less often in the background to reduce overhead.";
+"sampling.mode.responsive" = "Live";
+"sampling.mode.responsive.detail" = "Updates more often while MacVitals is visible.";
 "section.hardware" = "Hardware";
 "section.heavyApps" = "Heavy Apps";
 "section.diagnostics" = "Diagnostics";
@@ -39,6 +45,8 @@
 "settings.memoryThreshold" = "Memory alert";
 "settings.menuBar" = "Menu bar";
 "settings.notifications" = "Notifications";
+"settings.performance" = "Performance";
+"settings.samplingMode" = "Sampling";
 "settings.startup" = "Startup";
 "settings.swapThreshold" = "Swap alert";
 "status.busy" = "Busy";

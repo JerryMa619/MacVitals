@@ -25,6 +25,26 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    Picker(L.t("settings.samplingMode"), selection: Binding(
+                        get: { monitor.settings.samplingMode },
+                        set: { newValue in
+                            monitor.setSamplingMode(newValue)
+                        }
+                    )) {
+                        ForEach(SamplingMode.allCases) { mode in
+                            Text(mode.title).tag(mode)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+
+                    Text(monitor.settings.samplingMode.detail)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                } header: {
+                    Text(L.t("settings.performance"))
+                }
+
+                Section {
                     Toggle(isOn: Binding(
                         get: { monitor.settings.notificationsEnabled },
                         set: { enabled in
@@ -82,7 +102,7 @@ struct SettingsView: View {
             .padding(.horizontal, 12)
             .padding(.vertical, 10)
         }
-        .frame(width: 420, height: 430)
+        .frame(width: 420, height: 500)
         .background(Color(nsColor: .windowBackgroundColor))
     }
 

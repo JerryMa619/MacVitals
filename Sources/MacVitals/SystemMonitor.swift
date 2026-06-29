@@ -81,6 +81,12 @@ final class SystemMonitor: ObservableObject {
         onStatsChanged?(stats)
     }
 
+    func setSamplingMode(_ mode: SamplingMode) {
+        settings.samplingMode = mode
+        saveSettings()
+        scheduleTimer()
+    }
+
     func setNotificationsEnabled(_ enabled: Bool) {
         if enabled {
             Task {
@@ -107,7 +113,7 @@ final class SystemMonitor: ObservableObject {
 
     private func scheduleTimer() {
         timer?.invalidate()
-        let interval: TimeInterval = isFocused ? 1.5 : 4.0
+        let interval = settings.samplingMode.interval(isFocused: isFocused)
         timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
             Task { @MainActor in
                 self?.sample()
