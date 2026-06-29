@@ -25,6 +25,7 @@ final class SystemMonitor: ObservableObject {
 
     init() {
         settings = settingsStore.load()
+        L.setLanguage(settings.appLanguage)
     }
 
     func start() {
@@ -92,6 +93,14 @@ final class SystemMonitor: ObservableObject {
         saveSettings()
         sample()
         scheduleTimer()
+    }
+
+    func setAppLanguage(_ language: AppLanguage) {
+        settings.appLanguage = language
+        L.setLanguage(language)
+        saveSettings()
+        objectWillChange.send()
+        onStatsChanged?(stats)
     }
 
     func setNotificationsEnabled(_ enabled: Bool) {
@@ -182,6 +191,7 @@ private final class SystemSampler {
             cpu: sampleCPU(),
             disk: sampleDisk(),
             battery: sampleBattery(),
+            thermal: sampleThermal(),
             network: sampleNetwork(),
             processes: sampleProcesses(),
             sampledAt: .now
@@ -293,6 +303,10 @@ private final class SystemSampler {
         }
 
         return BatteryStats(percent: percent, isCharging: isCharging, powerSource: state)
+    }
+
+    private func sampleThermal() -> ThermalStats {
+        ThermalStats(state: ProcessInfo.processInfo.thermalState)
     }
 
     private func sampleNetwork() -> NetworkStats {

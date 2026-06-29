@@ -18,6 +18,8 @@
 "hardware.diskFree" = "Disk free";
 "hardware.networkDown" = "Network down";
 "hardware.networkUp" = "Network up";
+"hardware.thermal" = "Thermal";
+"language.system" = "System";
 "memory.app" = "App";
 "memory.cached" = "Cached";
 "memory.compressed" = "Compressed";
@@ -56,6 +58,7 @@
 "recommendation.memorySwap.title" = "Memory pressure and swap are high";
 "recommendation.memoryTight.detail" = "Review heavy apps and browser tabs before opening more demanding work.";
 "recommendation.memoryTight.title" = "Memory pressure is tight";
+"recommendation.thermal.title" = "Thermal state: %@";
 "sampling.mode.balanced" = "Balanced";
 "sampling.mode.balanced.detail" = "Refreshes quickly while visible and slows down in the background.";
 "sampling.mode.lowPower" = "Low Power";
@@ -73,6 +76,7 @@
 "settings.alerts" = "Alerts";
 "settings.alertsFooter" = "Alerts stay local and only fire when a metric crosses its threshold.";
 "settings.general" = "General";
+"settings.language" = "Language";
 "settings.memoryThreshold" = "Memory alert";
 "settings.menuBar" = "Menu bar";
 "settings.notifications" = "Notifications";
@@ -86,4 +90,14 @@
 "status.busy" = "Busy";
 "status.healthy" = "Healthy";
 "status.tight" = "Tight";
+"thermal.critical" = "Critical";
+"thermal.critical.detail" = "macOS reports critical thermal pressure. Let the Mac cool down before continuing heavy work.";
+"thermal.fair" = "Warm";
+"thermal.fair.detail" = "The Mac is warmer than usual. Reducing heavy tasks can help maintain performance.";
+"thermal.nominal" = "Normal";
+"thermal.nominal.detail" = "Thermal pressure is normal.";
+"thermal.serious" = "Hot";
+"thermal.serious.detail" = "macOS reports serious thermal pressure. Performance may be reduced until the Mac cools down.";
+"thermal.unknown" = "Unknown";
+"thermal.unknown.detail" = "Thermal state is not available.";
 "trends.window" = "Recent";

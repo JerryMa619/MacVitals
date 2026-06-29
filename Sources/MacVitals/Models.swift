@@ -5,6 +5,7 @@ struct SystemStats {
     var cpu: CPUStats = .empty
     var disk: DiskStats = .empty
     var battery: BatteryStats = .empty
+    var thermal: ThermalStats = .empty
     var network: NetworkStats = .empty
     var processes: [ProcessStats] = []
     var sampledAt: Date = .now
@@ -92,9 +93,43 @@ enum SamplingMode: String, CaseIterable, Identifiable {
     }
 }
 
+enum AppLanguage: String, CaseIterable, Identifiable {
+    case system
+    case english
+    case simplifiedChinese
+    case french
+    case russian
+    case german
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .system: L.t("language.system")
+        case .english: "English"
+        case .simplifiedChinese: "中文"
+        case .french: "Français"
+        case .russian: "Русский"
+        case .german: "Deutsch"
+        }
+    }
+
+    var localeIdentifier: String? {
+        switch self {
+        case .system: nil
+        case .english: "en"
+        case .simplifiedChinese: "zh-Hans"
+        case .french: "fr"
+        case .russian: "ru"
+        case .german: "de"
+        }
+    }
+}
+
 struct MonitorSettings {
     var menuBarDisplayMode: MenuBarDisplayMode
     var samplingMode: SamplingMode
+    var appLanguage: AppLanguage
     var notificationsEnabled: Bool
     var memoryPressureThreshold: Double
     var swapThresholdBytes: UInt64
@@ -102,6 +137,7 @@ struct MonitorSettings {
     static let defaults = MonitorSettings(
         menuBarDisplayMode: .memoryPressure,
         samplingMode: .balanced,
+        appLanguage: .system,
         notificationsEnabled: false,
         memoryPressureThreshold: 0.82,
         swapThresholdBytes: 2 * 1024 * 1024 * 1024
@@ -171,6 +207,50 @@ struct BatteryStats {
     static let empty = BatteryStats(percent: nil, isCharging: false, powerSource: "Unknown")
 }
 
+struct ThermalStats {
+    var state: ProcessInfo.ThermalState
+
+    var title: String {
+        switch state {
+        case .nominal: L.t("thermal.nominal")
+        case .fair: L.t("thermal.fair")
+        case .serious: L.t("thermal.serious")
+        case .critical: L.t("thermal.critical")
+        @unknown default: L.t("thermal.unknown")
+        }
+    }
+
+    var detail: String {
+        switch state {
+        case .nominal: L.t("thermal.nominal.detail")
+        case .fair: L.t("thermal.fair.detail")
+        case .serious: L.t("thermal.serious.detail")
+        case .critical: L.t("thermal.critical.detail")
+        @unknown default: L.t("thermal.unknown.detail")
+        }
+    }
+
+    var symbolName: String {
+        switch state {
+        case .nominal: "thermometer.low"
+        case .fair: "thermometer.medium"
+        case .serious, .critical: "thermometer.high"
+        @unknown default: "thermometer.variable"
+        }
+    }
+
+    var severity: RecommendationSeverity {
+        switch state {
+        case .nominal: .healthy
+        case .fair: .notice
+        case .serious, .critical: .warning
+        @unknown default: .notice
+        }
+    }
+
+    static let empty = ThermalStats(state: .nominal)
+}
+
 struct NetworkStats {
     var receivedBytesPerSecond: UInt64
     var sentBytesPerSecond: UInt64
@@ -185,7 +265,7 @@ struct ProcessStats: Identifiable {
     var memoryBytes: UInt64
 }
 
-enum RecommendationSeverity {
+enum RecommendationSeverity: Equatable {
     case healthy
     case notice
     case warning
@@ -213,6 +293,7 @@ struct SystemRecommendation: Identifiable {
         let memoryIsBusy = stats.memory.pressure >= 0.72
         let cpuIsBusy = stats.cpu.activePercent >= 0.78
         let diskIsTight = stats.disk.usedPercent >= 0.9
+        let thermalNeedsAttention = stats.thermal.severity != .healthy
 
         if memoryIsTight, swapIsHigh, let heaviestProcess {
             recommendations.append(
@@ -259,6 +340,17 @@ struct SystemRecommendation: Identifiable {
                     severity: .notice,
                     title: L.t("recommendation.cpuBusy.title"),
                     detail: L.t("recommendation.cpuBusy.detail")
+                )
+            )
+        }
+
+        if thermalNeedsAttention {
+            recommendations.append(
+                SystemRecommendation(
+                    id: "thermal-state",
+                    severity: stats.thermal.severity,
+                    title: String(format: L.t("recommendation.thermal.title"), stats.thermal.title),
+                    detail: stats.thermal.detail
                 )
             )
         }

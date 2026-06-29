@@ -50,8 +50,11 @@
 		300000000000000000000016 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		300000000000000000000017 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		300000000000000000000018 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
-		300000000000000000000019 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Sources/MacVitals/Resources/en.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+			300000000000000000000019 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Sources/MacVitals/Resources/en.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
 			300000000000000000000020 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "Sources/MacVitals/Resources/zh-Hans.lproj/Localizable.strings"; sourceTree = SOURCE_ROOT; };
+			300000000000000000000027 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Sources/MacVitals/Resources/fr.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+			300000000000000000000028 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Sources/MacVitals/Resources/ru.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+			300000000000000000000029 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Sources/MacVitals/Resources/de.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
 			300000000000000000000021 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 			300000000000000000000022 /* DiagnosticSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticSnapshot.swift; sourceTree = "<group>"; };
 			300000000000000000000023 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -243,10 +246,13 @@
 /* Begin PBXVariantGroup section */
 		900000000000000000000001 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
-			children = (
-				300000000000000000000019 /* en */,
-				300000000000000000000020 /* zh-Hans */,
-			);
+				children = (
+					300000000000000000000019 /* en */,
+					300000000000000000000020 /* zh-Hans */,
+					300000000000000000000027 /* fr */,
+					300000000000000000000028 /* ru */,
+					300000000000000000000029 /* de */,
+				);
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};

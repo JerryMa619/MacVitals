@@ -10,6 +10,7 @@ enum DiagnosticSnapshot {
         lines.append("- Memory pressure: \(stats.memory.pressure.percentText)")
         lines.append("- CPU active: \(stats.cpu.activePercent.percentText)")
         lines.append("- Swap used: \(ByteText.format(stats.memory.swapUsedBytes))")
+        lines.append("- Thermal state: \(stats.thermal.title) - \(stats.thermal.detail)")
         lines.append("- Disk free: \(ByteText.format(stats.disk.freeBytes))")
         lines.append("- Battery: \(batteryText(stats.battery))")
         lines.append("- Network down: \(ByteText.rate(stats.network.receivedBytesPerSecond))")

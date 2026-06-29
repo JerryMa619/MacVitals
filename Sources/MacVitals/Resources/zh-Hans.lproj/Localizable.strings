@@ -18,6 +18,8 @@
 "hardware.diskFree" = "磁盘剩余";
 "hardware.networkDown" = "网络下行";
 "hardware.networkUp" = "网络上行";
+"hardware.thermal" = "温度状态";
+"language.system" = "跟随系统";
 "memory.app" = "应用";
 "memory.cached" = "缓存";
 "memory.compressed" = "压缩";
@@ -56,6 +58,7 @@
 "recommendation.memorySwap.title" = "内存压力和 Swap 偏高";
 "recommendation.memoryTight.detail" = "建议先检查高占用应用和浏览器标签，再继续打开大型任务。";
 "recommendation.memoryTight.title" = "内存压力偏紧";
+"recommendation.thermal.title" = "温度状态：%@";
 "sampling.mode.balanced" = "均衡";
 "sampling.mode.balanced.detail" = "窗口可见时快速刷新，后台自动降低频率。";
 "sampling.mode.lowPower" = "低功耗";
@@ -73,6 +76,7 @@
 "settings.alerts" = "提醒";
 "settings.alertsFooter" = "提醒仅在本机触发，并且只在指标跨过阈值时发送。";
 "settings.general" = "通用";
+"settings.language" = "语言";
 "settings.memoryThreshold" = "内存提醒";
 "settings.menuBar" = "菜单栏";
 "settings.notifications" = "通知提醒";
@@ -86,4 +90,14 @@
 "status.busy" = "繁忙";
 "status.healthy" = "健康";
 "status.tight" = "吃紧";
+"thermal.critical" = "临界";
+"thermal.critical.detail" = "macOS 报告临界热压力。建议先让 Mac 降温，再继续高负载任务。";
+"thermal.fair" = "偏热";
+"thermal.fair.detail" = "Mac 温度高于平常。减少高负载任务可以帮助维持性能。";
+"thermal.nominal" = "正常";
+"thermal.nominal.detail" = "当前热压力正常。";
+"thermal.serious" = "过热";
+"thermal.serious.detail" = "macOS 报告严重热压力。降温前系统性能可能会被限制。";
+"thermal.unknown" = "未知";
+"thermal.unknown.detail" = "当前无法读取热状态。";
 "trends.window" = "最近";

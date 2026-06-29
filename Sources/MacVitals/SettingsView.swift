@@ -28,6 +28,18 @@ struct SettingsView: View {
                             }
                         }
                         .pickerStyle(.menu)
+
+                        Picker(L.t("settings.language"), selection: Binding(
+                            get: { monitor.settings.appLanguage },
+                            set: { newValue in
+                                monitor.setAppLanguage(newValue)
+                            }
+                        )) {
+                            ForEach(AppLanguage.allCases) { language in
+                                Text(language.title).tag(language)
+                            }
+                        }
+                        .pickerStyle(.menu)
                     } header: {
                         Text(L.t("settings.general"))
                     }

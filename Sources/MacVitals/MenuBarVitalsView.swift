@@ -68,7 +68,7 @@ struct MenuBarVitalsView: View {
     private var miniMetrics: some View {
         HStack(spacing: 10) {
             MiniMetric(title: "CPU", value: monitor.stats.cpu.activePercent.percentText, tint: .blue)
-            MiniMetric(title: "Swap", value: ByteText.format(monitor.stats.memory.swapUsedBytes), tint: .orange)
+            MiniMetric(title: L.t("hardware.thermal"), value: monitor.stats.thermal.title, tint: thermalColor)
             MiniMetric(title: L.t("metric.disk"), value: ByteText.format(monitor.stats.disk.freeBytes), tint: .purple)
         }
     }
@@ -145,6 +145,14 @@ struct MenuBarVitalsView: View {
         case .healthy: return .green
         case .notice: return .blue
         case .warning: return .orange
+        }
+    }
+
+    private var thermalColor: Color {
+        switch monitor.stats.thermal.severity {
+        case .healthy: return .green
+        case .notice: return .orange
+        case .warning: return .red
         }
     }
 }

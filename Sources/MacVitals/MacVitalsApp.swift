@@ -41,6 +41,7 @@ struct MacVitalsApp: App {
     private func startIfNeeded() {
         guard !didStart else { return }
         didStart = true
+        L.setLanguage(monitor.settings.appLanguage)
         NSApp.setActivationPolicy(.regular)
         monitor.start()
         appDelegate.configure(monitor: monitor)

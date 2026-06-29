@@ -407,6 +407,7 @@ private struct HardwareSection: View {
         VStack(alignment: .leading, spacing: 10) {
             SectionTitle(L.t("section.hardware"))
             StatRow("CPU", String(format: L.t("hardware.cpuActive"), stats.cpu.activePercent.percentText))
+            StatRow(L.t("hardware.thermal"), stats.thermal.title)
             StatRow(L.t("hardware.diskFree"), ByteText.format(stats.disk.freeBytes))
             StatRow(L.t("hardware.battery"), batteryText)
             StatRow(L.t("hardware.networkDown"), ByteText.rate(stats.network.receivedBytesPerSecond))
