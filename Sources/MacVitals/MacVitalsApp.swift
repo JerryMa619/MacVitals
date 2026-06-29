@@ -13,7 +13,7 @@ final class MacVitalsApp: NSObject, NSApplicationDelegate {
     private var onboardingWindow: NSWindow?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        NSApp.setActivationPolicy(.accessory)
+        NSApp.setActivationPolicy(.regular)
 
         let contentView = DashboardView { [weak self] in
             self?.showSettingsWindow()
@@ -41,10 +41,10 @@ final class MacVitalsApp: NSObject, NSApplicationDelegate {
         }
         monitor.start()
 
+        showDashboardWindow()
+
         if !onboardingStore.hasCompleted {
             showOnboardingWindow()
-        } else {
-            showDashboardWindow()
         }
     }
 
