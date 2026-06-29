@@ -26,6 +26,18 @@
 "notification.swap.body" = "Swap 使用量已达到 %@。建议查看高占用应用。";
 "notification.swap.title" = "Swap 使用量偏高";
 "process.empty" = "暂无可用的运行应用数据。";
+"recommendation.cpuBusy.detail" = "如果电脑明显卡顿，可以打开活动监视器查看正在占用 CPU 的应用。";
+"recommendation.cpuBusy.title" = "CPU 较忙";
+"recommendation.diskTight.detail" = "当前仅剩 %@。建议为 Swap 和系统更新留出一些空间。";
+"recommendation.diskTight.title" = "磁盘空间偏紧";
+"recommendation.healthy.detail" = "暂时不需要处理。";
+"recommendation.healthy.title" = "系统压力正常";
+"recommendation.memoryBusy.detail" = "%@ 当前占用 %@。如果内存压力继续升高，可以优先关注它。";
+"recommendation.memoryBusy.title" = "内存使用正在上升";
+"recommendation.memorySwap.detail" = "%@ 正在占用 %@，同时 Swap 已到 %@。建议先查看高占用应用，不要直接强制清理。";
+"recommendation.memorySwap.title" = "内存压力和 Swap 偏高";
+"recommendation.memoryTight.detail" = "建议先检查高占用应用和浏览器标签，再继续打开大型任务。";
+"recommendation.memoryTight.title" = "内存压力偏紧";
 "sampling.mode.balanced" = "均衡";
 "sampling.mode.balanced.detail" = "适合日常常驻使用的自适应采样。";
 "sampling.mode.lowPower" = "低功耗";
@@ -37,6 +49,7 @@
 "section.diagnostics" = "诊断";
 "section.memory" = "内存";
 "section.preferences" = "偏好设置";
+"section.recommendations" = "建议";
 "section.trends" = "趋势";
 "settings.launchAtLogin" = "开机启动";
 "settings.alerts" = "提醒";

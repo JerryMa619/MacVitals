@@ -15,6 +15,11 @@ enum DiagnosticSnapshot {
         lines.append("- Network down: \(ByteText.rate(stats.network.receivedBytesPerSecond))")
         lines.append("- Network up: \(ByteText.rate(stats.network.sentBytesPerSecond))")
         lines.append("")
+        lines.append("Recommendations")
+        for recommendation in stats.recommendations {
+            lines.append("- \(recommendation.title): \(recommendation.detail)")
+        }
+        lines.append("")
         lines.append("Memory")
         lines.append("- Total: \(ByteText.format(stats.memory.totalBytes))")
         lines.append("- Used: \(ByteText.format(stats.memory.usedBytes))")

@@ -21,6 +21,7 @@
 ## 0.3 Diagnostics
 
 - Per-app recommendations when memory pressure and swap both rise.
+- Explainable recommendations for CPU pressure and low disk space.
 - Short historical charts for memory, CPU, and swap.
 - Low-power, balanced, and live sampling modes.
 - Export diagnostic snapshot as plain text.

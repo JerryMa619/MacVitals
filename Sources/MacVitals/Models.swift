@@ -25,6 +25,10 @@ struct SystemStats {
             return "MV"
         }
     }
+
+    var recommendations: [SystemRecommendation] {
+        SystemRecommendation.make(for: self)
+    }
 }
 
 struct HistorySample: Identifiable {
@@ -179,4 +183,111 @@ struct ProcessStats: Identifiable {
     var pid: pid_t
     var name: String
     var memoryBytes: UInt64
+}
+
+enum RecommendationSeverity {
+    case healthy
+    case notice
+    case warning
+
+    var symbolName: String {
+        switch self {
+        case .healthy: "checkmark.circle"
+        case .notice: "info.circle"
+        case .warning: "exclamationmark.triangle"
+        }
+    }
+}
+
+struct SystemRecommendation: Identifiable {
+    let id: String
+    let severity: RecommendationSeverity
+    let title: String
+    let detail: String
+
+    static func make(for stats: SystemStats) -> [SystemRecommendation] {
+        var recommendations: [SystemRecommendation] = []
+        let heaviestProcess = stats.processes.first
+        let swapIsHigh = stats.memory.swapUsedBytes >= 1_073_741_824
+        let memoryIsTight = stats.memory.pressure >= 0.82
+        let memoryIsBusy = stats.memory.pressure >= 0.72
+        let cpuIsBusy = stats.cpu.activePercent >= 0.78
+        let diskIsTight = stats.disk.usedPercent >= 0.9
+
+        if memoryIsTight, swapIsHigh, let heaviestProcess {
+            recommendations.append(
+                SystemRecommendation(
+                    id: "memory-swap-heavy-app",
+                    severity: .warning,
+                    title: L.t("recommendation.memorySwap.title"),
+                    detail: String(
+                        format: L.t("recommendation.memorySwap.detail"),
+                        heaviestProcess.name,
+                        ByteText.format(heaviestProcess.memoryBytes),
+                        ByteText.format(stats.memory.swapUsedBytes)
+                    )
+                )
+            )
+        } else if memoryIsTight {
+            recommendations.append(
+                SystemRecommendation(
+                    id: "memory-tight",
+                    severity: .warning,
+                    title: L.t("recommendation.memoryTight.title"),
+                    detail: L.t("recommendation.memoryTight.detail")
+                )
+            )
+        } else if memoryIsBusy, let heaviestProcess {
+            recommendations.append(
+                SystemRecommendation(
+                    id: "memory-busy",
+                    severity: .notice,
+                    title: L.t("recommendation.memoryBusy.title"),
+                    detail: String(
+                        format: L.t("recommendation.memoryBusy.detail"),
+                        heaviestProcess.name,
+                        ByteText.format(heaviestProcess.memoryBytes)
+                    )
+                )
+            )
+        }
+
+        if cpuIsBusy {
+            recommendations.append(
+                SystemRecommendation(
+                    id: "cpu-busy",
+                    severity: .notice,
+                    title: L.t("recommendation.cpuBusy.title"),
+                    detail: L.t("recommendation.cpuBusy.detail")
+                )
+            )
+        }
+
+        if diskIsTight {
+            recommendations.append(
+                SystemRecommendation(
+                    id: "disk-tight",
+                    severity: .notice,
+                    title: L.t("recommendation.diskTight.title"),
+                    detail: String(
+                        format: L.t("recommendation.diskTight.detail"),
+                        ByteText.format(stats.disk.freeBytes)
+                    )
+                )
+            )
+        }
+
+        if recommendations.isEmpty {
+            recommendations.append(
+                SystemRecommendation(
+                    id: "healthy",
+                    severity: .healthy,
+                    title: L.t("recommendation.healthy.title"),
+                    detail: L.t("recommendation.healthy.detail")
+                )
+            )
+        }
+
+        return Array(recommendations.prefix(3))
+    }
 }

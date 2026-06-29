@@ -12,6 +12,7 @@ struct DashboardView: View {
                 VStack(spacing: 14) {
                     OverviewSection(stats: monitor.stats)
                     TrendSection(history: monitor.history)
+                    RecommendationSection(recommendations: monitor.stats.recommendations)
                     MemorySection(memory: monitor.stats.memory)
                     HardwareSection(stats: monitor.stats)
                     DiagnosticsSection(snapshotStatus: monitor.snapshotStatus) {
@@ -68,6 +69,47 @@ struct DashboardView: View {
         }
         .buttonStyle(.borderless)
         .padding(12)
+    }
+}
+
+private struct RecommendationSection: View {
+    let recommendations: [SystemRecommendation]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            SectionTitle(L.t("section.recommendations"))
+
+            VStack(spacing: 8) {
+                ForEach(recommendations) { recommendation in
+                    HStack(alignment: .top, spacing: 9) {
+                        Image(systemName: recommendation.severity.symbolName)
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(color(for: recommendation.severity))
+                            .frame(width: 18)
+
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(recommendation.title)
+                                .font(.system(size: 12, weight: .medium))
+                            Text(recommendation.detail)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+
+                        Spacer(minLength: 0)
+                    }
+                }
+            }
+        }
+        .panelStyle()
+    }
+
+    private func color(for severity: RecommendationSeverity) -> Color {
+        switch severity {
+        case .healthy: .green
+        case .notice: .blue
+        case .warning: .orange
+        }
     }
 }
 

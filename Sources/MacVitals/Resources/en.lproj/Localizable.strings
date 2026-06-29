@@ -26,6 +26,18 @@
 "notification.swap.body" = "Swap usage reached %@. Check heavy apps when convenient.";
 "notification.swap.title" = "Swap usage is high";
 "process.empty" = "No running app data available.";
+"recommendation.cpuBusy.detail" = "Check Activity Monitor for active apps if the Mac feels sluggish.";
+"recommendation.cpuBusy.title" = "CPU is busy";
+"recommendation.diskTight.detail" = "Only %@ is free. Keep some space available for swap and system updates.";
+"recommendation.diskTight.title" = "Disk space is tight";
+"recommendation.healthy.detail" = "No immediate action is needed.";
+"recommendation.healthy.title" = "System pressure looks normal";
+"recommendation.memoryBusy.detail" = "%@ is currently using %@. Keep an eye on it if pressure rises.";
+"recommendation.memoryBusy.title" = "Memory use is rising";
+"recommendation.memorySwap.detail" = "%@ is using %@ while swap is %@. Review heavy apps before closing anything.";
+"recommendation.memorySwap.title" = "Memory pressure and swap are high";
+"recommendation.memoryTight.detail" = "Review heavy apps and browser tabs before opening more demanding work.";
+"recommendation.memoryTight.title" = "Memory pressure is tight";
 "sampling.mode.balanced" = "Balanced";
 "sampling.mode.balanced.detail" = "Adaptive sampling for everyday use.";
 "sampling.mode.lowPower" = "Low Power";
@@ -37,6 +49,7 @@
 "section.diagnostics" = "Diagnostics";
 "section.memory" = "Memory";
 "section.preferences" = "Preferences";
+"section.recommendations" = "Recommendations";
 "section.trends" = "Trends";
 "settings.launchAtLogin" = "Launch at Login";
 "settings.alerts" = "Alerts";
