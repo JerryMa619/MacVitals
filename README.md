@@ -7,16 +7,24 @@ MacVitals is a lightweight native macOS menu bar monitor for memory, CPU, disk, 
 - Native Swift + SwiftUI + AppKit menu bar app.
 - Low-overhead periodic sampling.
 - Memory pressure, swap, CPU, disk, battery, network throughput, and running app memory ranking.
+- App Sandbox entitlement and menu bar agent bundle configuration.
+- Launch at Login preference using Apple's public ServiceManagement API.
 - Conservative "optimize" action that surfaces heavy apps and opens Activity Monitor instead of force-killing processes.
 
 ## Run
 
-Open `Package.swift` in Xcode and run the `MacVitals` executable target.
+Open `MacVitals.xcodeproj` in Xcode and run the `MacVitals` scheme.
 
-The current machine has only Command Line Tools selected, so full `xcodebuild` verification requires installing or selecting full Xcode:
+Command-line debug app build:
 
 ```sh
-sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+xcodebuild \
+  -project MacVitals.xcodeproj \
+  -scheme MacVitals \
+  -configuration Debug \
+  -derivedDataPath ../../work/MacVitalsDerivedData \
+  CODE_SIGNING_ALLOWED=NO \
+  build
 ```
 
 ## App Store Direction

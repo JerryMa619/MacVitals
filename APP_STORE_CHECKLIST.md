@@ -10,6 +10,7 @@
 
 - Use public macOS APIs only.
 - Enable App Sandbox before submission.
+- Keep Launch at Login on Apple's public ServiceManagement API.
 - Test process memory visibility while sandboxed.
 - Keep network access disabled unless a future feature truly needs it.
 - Do not kill processes automatically.

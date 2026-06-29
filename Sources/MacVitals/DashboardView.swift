@@ -12,6 +12,12 @@ struct DashboardView: View {
                     OverviewSection(stats: monitor.stats)
                     MemorySection(memory: monitor.stats.memory)
                     HardwareSection(stats: monitor.stats)
+                    PreferencesSection(
+                        launchAtLoginEnabled: monitor.launchAtLoginEnabled,
+                        settingsError: monitor.settingsError
+                    ) { enabled in
+                        monitor.setLaunchAtLoginEnabled(enabled)
+                    }
                     ProcessSection(processes: monitor.stats.processes) {
                         monitor.openActivityMonitor()
                     }
@@ -157,6 +163,35 @@ private struct ProcessSection: View {
                     }
                     .font(.system(size: 12))
                 }
+            }
+        }
+        .panelStyle()
+    }
+}
+
+private struct PreferencesSection: View {
+    let launchAtLoginEnabled: Bool
+    let settingsError: String?
+    let setLaunchAtLoginEnabled: (Bool) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            SectionTitle("Preferences")
+            Toggle(isOn: Binding(
+                get: { launchAtLoginEnabled },
+                set: { newValue in
+                    setLaunchAtLoginEnabled(newValue)
+                }
+            )) {
+                Label("Launch at Login", systemImage: "power")
+            }
+            .toggleStyle(.switch)
+
+            if let settingsError {
+                Text(settingsError)
+                    .font(.caption)
+                    .foregroundStyle(.red)
+                    .lineLimit(2)
             }
         }
         .panelStyle()

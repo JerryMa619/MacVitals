@@ -6,6 +6,8 @@ import IOKit.ps
 @MainActor
 final class SystemMonitor: ObservableObject {
     @Published private(set) var stats = SystemStats()
+    @Published private(set) var launchAtLoginEnabled = LaunchAtLoginController.isEnabled
+    @Published private(set) var settingsError: String?
 
     var onStatsChanged: ((SystemStats) -> Void)?
 
@@ -14,6 +16,7 @@ final class SystemMonitor: ObservableObject {
     private var isFocused = false
 
     func start() {
+        syncLaunchAtLogin()
         sample()
         scheduleTimer()
     }
@@ -34,6 +37,21 @@ final class SystemMonitor: ObservableObject {
 
     func openActivityMonitor() {
         NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Applications/Utilities/Activity Monitor.app"))
+    }
+
+    func syncLaunchAtLogin() {
+        launchAtLoginEnabled = LaunchAtLoginController.isEnabled
+    }
+
+    func setLaunchAtLoginEnabled(_ enabled: Bool) {
+        do {
+            try LaunchAtLoginController.setEnabled(enabled)
+            settingsError = nil
+            syncLaunchAtLogin()
+        } catch {
+            settingsError = error.localizedDescription
+            syncLaunchAtLogin()
+        }
     }
 
     private func scheduleTimer() {
