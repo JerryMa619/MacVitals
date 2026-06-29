@@ -14,6 +14,9 @@ struct DashboardView: View {
                     TrendSection(history: monitor.history)
                     MemorySection(memory: monitor.stats.memory)
                     HardwareSection(stats: monitor.stats)
+                    DiagnosticsSection(snapshotStatus: monitor.snapshotStatus) {
+                        monitor.copyDiagnosticSnapshot()
+                    }
                     ProcessSection(processes: monitor.stats.processes) {
                         monitor.openActivityMonitor()
                     }
@@ -65,6 +68,37 @@ struct DashboardView: View {
         }
         .buttonStyle(.borderless)
         .padding(12)
+    }
+}
+
+private struct DiagnosticsSection: View {
+    let snapshotStatus: String?
+    let copySnapshot: () -> Void
+
+    var body: some View {
+        HStack(spacing: 10) {
+            VStack(alignment: .leading, spacing: 3) {
+                SectionTitle(L.t("section.diagnostics"))
+                Text(L.t("diagnostics.snapshotHelp"))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+            }
+
+            Spacer()
+
+            if let snapshotStatus {
+                Text(snapshotStatus)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Button(action: copySnapshot) {
+                Label(L.t("action.copySnapshot"), systemImage: "doc.on.doc")
+            }
+            .buttonStyle(.borderless)
+        }
+        .panelStyle()
     }
 }
 

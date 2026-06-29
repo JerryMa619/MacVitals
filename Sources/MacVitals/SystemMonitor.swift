@@ -11,6 +11,7 @@ final class SystemMonitor: ObservableObject {
     @Published private(set) var settings: MonitorSettings
     @Published private(set) var launchAtLoginEnabled = LaunchAtLoginController.isEnabled
     @Published private(set) var settingsError: String?
+    @Published private(set) var snapshotStatus: String?
 
     var onStatsChanged: ((SystemStats) -> Void)?
 
@@ -20,6 +21,7 @@ final class SystemMonitor: ObservableObject {
     private let notificationController = NotificationController()
     private var isFocused = false
     private let maxHistorySamples = 120
+    private var snapshotStatusExpiresAt: Date?
 
     init() {
         settings = settingsStore.load()
@@ -47,6 +49,15 @@ final class SystemMonitor: ObservableObject {
 
     func openActivityMonitor() {
         NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Applications/Utilities/Activity Monitor.app"))
+    }
+
+    func copyDiagnosticSnapshot() {
+        let snapshot = DiagnosticSnapshot.make(stats: stats, history: history)
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(snapshot, forType: .string)
+        snapshotStatus = L.t("diagnostics.copied")
+        snapshotStatusExpiresAt = Date().addingTimeInterval(3)
     }
 
     func syncLaunchAtLogin() {
@@ -109,6 +120,7 @@ final class SystemMonitor: ObservableObject {
         appendHistorySample(from: stats)
         notificationController.evaluate(stats: stats, settings: settings)
         onStatsChanged?(stats)
+        clearSnapshotStatusIfNeeded()
     }
 
     private func saveSettings() {
@@ -127,6 +139,14 @@ final class SystemMonitor: ObservableObject {
 
         if history.count > maxHistorySamples {
             history.removeFirst(history.count - maxHistorySamples)
+        }
+    }
+
+    private func clearSnapshotStatusIfNeeded() {
+        guard let snapshotStatusExpiresAt else { return }
+        if Date() >= snapshotStatusExpiresAt {
+            snapshotStatus = nil
+            self.snapshotStatusExpiresAt = nil
         }
     }
 }

@@ -1,7 +1,10 @@
 "action.activityMonitor" = "活动监视器";
+"action.copySnapshot" = "复制";
 "action.refresh" = "刷新";
 "action.settings" = "设置";
 "battery.charging" = "充电中";
+"diagnostics.copied" = "已复制";
+"diagnostics.snapshotHelp" = "复制本机文本快照，用于排查卡顿。";
 "error.notificationsDenied" = "通知权限未授权。";
 "hardware.battery" = "电池";
 "hardware.cpuActive" = "%@ 活跃";
@@ -25,6 +28,7 @@
 "process.empty" = "暂无可用的运行应用数据。";
 "section.hardware" = "硬件";
 "section.heavyApps" = "高占用应用";
+"section.diagnostics" = "诊断";
 "section.memory" = "内存";
 "section.preferences" = "偏好设置";
 "section.trends" = "趋势";

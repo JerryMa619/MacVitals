@@ -1,7 +1,10 @@
 "action.activityMonitor" = "Activity Monitor";
+"action.copySnapshot" = "Copy";
 "action.refresh" = "Refresh";
 "action.settings" = "Settings";
 "battery.charging" = "charging";
+"diagnostics.copied" = "Copied";
+"diagnostics.snapshotHelp" = "Copy a local text snapshot for troubleshooting.";
 "error.notificationsDenied" = "Notification permission was not granted.";
 "hardware.battery" = "Battery";
 "hardware.cpuActive" = "%@ active";
@@ -25,6 +28,7 @@
 "process.empty" = "No running app data available.";
 "section.hardware" = "Hardware";
 "section.heavyApps" = "Heavy Apps";
+"section.diagnostics" = "Diagnostics";
 "section.memory" = "Memory";
 "section.preferences" = "Preferences";
 "section.trends" = "Trends";

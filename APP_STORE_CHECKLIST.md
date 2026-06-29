@@ -22,7 +22,7 @@
 - No analytics in the MVP.
 - No account system.
 - No data upload.
-- Keep diagnostics local unless the user explicitly exports a snapshot.
+- Keep diagnostics local; snapshot export is user-triggered and copies plain text to the clipboard.
 
 ## Review Notes
 
