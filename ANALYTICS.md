@@ -4,24 +4,36 @@ MacVitals uses a privacy-first analytics approach.
 
 ## Website Analytics
 
-The website uses Plausible Analytics through:
+The website is prepared for the free Cloudflare Web Analytics snippet.
 
+Files:
+
+- `docs/analytics-config.js`
+- `docs/analytics.js`
 - `docs/index.html`
 - `docs/privacy.html`
 - `docs/support.html`
-- `docs/analytics.js`
 
-Current Plausible domain value:
+To enable Cloudflare Web Analytics:
 
-```html
-data-domain="jerryma619.github.io"
+1. Open Cloudflare Dashboard.
+2. Go to Analytics & Logs > Web Analytics.
+3. Add the MacVitals site.
+4. Copy the generated Web Analytics token.
+5. Paste the token into `docs/analytics-config.js`.
+
+```js
+window.MACVITALS_ANALYTICS = {
+  provider: "cloudflare",
+  cloudflareToken: "PASTE_TOKEN_HERE"
+};
 ```
 
-If MacVitals moves to a custom domain, update this value on all website pages to the new domain.
+Leave `cloudflareToken` blank to disable third-party website analytics.
 
 ## Website Events
 
-The website tracks these aggregate click events:
+The website marks these aggregate click events:
 
 - `View on GitHub`
 - `Join TestFlight`
@@ -34,7 +46,9 @@ Events are attached with:
 data-analytics-event="Join TestFlight"
 ```
 
-The small `docs/analytics.js` helper sends the event to Plausible when a matching link or button is clicked.
+`docs/analytics.js` records these events in `window.macVitalsAnalyticsEvents` during the page session. If Cloudflare Zaraz or GA4 is added later, the same helper will forward events through `zaraz.track(...)` or `gtag(...)`.
+
+Cloudflare Web Analytics itself is best for page traffic, referrers, countries, devices, and paths. Exact custom click-event reporting needs a free event-capable layer such as Cloudflare Zaraz, GA4, or a self-hosted tool.
 
 ## App Analytics
 
