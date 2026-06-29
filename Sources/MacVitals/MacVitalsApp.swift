@@ -41,10 +41,13 @@ final class MacVitalsApp: NSObject, NSApplicationDelegate {
         }
         monitor.start()
 
-        showDashboardWindow()
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.showDashboardWindow()
 
-        if !onboardingStore.hasCompleted {
-            showOnboardingWindow()
+            if !self.onboardingStore.hasCompleted {
+                self.showOnboardingWindow()
+            }
         }
     }
 
@@ -65,6 +68,11 @@ final class MacVitalsApp: NSObject, NSApplicationDelegate {
         monitor.stop()
     }
 
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        showDashboardWindow()
+        return true
+    }
+
     private func updateStatusItem(with stats: SystemStats) {
         let title = stats.menuBarTitle(for: monitor.settings.menuBarDisplayMode)
         statusItem?.button?.title = title
@@ -83,14 +91,22 @@ final class MacVitalsApp: NSObject, NSApplicationDelegate {
         }
             .environmentObject(monitor)
             .frame(width: 380, height: 560)
-        let controller = NSHostingController(rootView: contentView)
-        let window = NSWindow(contentViewController: controller)
+        let window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 380, height: 560),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable],
+            backing: .buffered,
+            defer: false
+        )
+        window.contentView = NSHostingView(rootView: contentView)
         window.title = "MacVitals"
-        window.styleMask = [.titled, .closable, .miniaturizable]
         window.isReleasedWhenClosed = false
+        window.contentMinSize = NSSize(width: 380, height: 560)
+        window.setContentSize(NSSize(width: 380, height: 560))
         window.center()
         dashboardWindow = window
+        window.makeMain()
         window.makeKeyAndOrderFront(nil)
+        window.orderFrontRegardless()
         NSApp.activate(ignoringOtherApps: true)
     }
 
